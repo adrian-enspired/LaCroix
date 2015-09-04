@@ -1,0 +1,37 @@
+{
+    "get": {
+        "permit" : "masters",
+        "call"   : "get",
+        "desc"   : "Returns a list of users with the given permission level.",
+        "help"   : "!get <role>",
+        "params" : 1
+    },
+    "add": {
+        "permit" : "masters",
+        "call"   : "add",
+        "desc"   : "Adds a user to a given permission level. The wildcard '*' (everyone) is supported.",
+        "help"   : "!add <user> <masters|trainers|users|blacklist>",
+        "params" : 2
+    },
+    "rm": {
+        "permit" : "masters",
+        "call"   : "rm",
+        "desc"   : "Removes a user from a given permission level.",
+        "help"   : "!rm <user> <masters|trainers|users|blacklist>",
+        "params" : 2
+    },
+    "teach": {
+        "permit" : ["masters", "teachers"],
+        "call"   : "teach",
+        "desc"   : "Create a new command for the bot to understand.",
+        "help"   : "!teach|!t <command name> \"output text [{}...]\"",
+        "params" : 2
+    },
+    "forget": {
+        "permit" : ["masters", "teachers"],
+        "call"   : "forget",
+        "desc"   : "Make the bot forget about a previously created command.",
+        "help"   : "!forget|!f <command name>",
+        "params" : 1
+    }
+}
