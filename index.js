@@ -23,7 +23,7 @@ function parse(user, message, cb) {
 
     // get command type, built-in or taught?
 
-    if (!commands.__proto__.hasOwnProperty(verb)) {
+    if (!commands.hasOwnProperty(verb)) {
         return cb("Command not found.", true);
     }
     var cmd = template[verb];
@@ -44,6 +44,7 @@ function parse(user, message, cb) {
             return cb("Incorrect number of parameters required:\n" + cmd.syntax, true);
         }
 
+        console.log(commands);
         commands[cmd.call](params, function (reply) {
             return cb(reply);
         });
@@ -57,15 +58,15 @@ function parse(user, message, cb) {
 function isPermitted(name, level) {
     // always allow config.master
     if (name === config.master) return true;
-    db.each("SELECT * FROM user WHERE name = ?", name, function (err, row) {
+    commands.db.each("SELECT * FROM user WHERE name = ?", name, function (err, row) {
         // deny if user not found
         if (err || typeof row === 'undefined') return false;
         // deny banned user
-        if (ROLE[row[1]] === ROLE.ban) return false;
+        if (commands.role[row[1]] === commands.role.ban) return false;
         // allow user if role is anyone
         if (level === "*") return true;
         // allow only if user has permissions equal to or higher
-        return (ROLE[row[1]] >= ROLE[level]) ? true : false;
+        return (commands.role[row[1]] >= commands.role[level]) ? true : false;
     });
 }
 
