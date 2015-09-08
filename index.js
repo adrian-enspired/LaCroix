@@ -7,15 +7,18 @@ var fs       = require('fs');
 var commands = new Commands(__dirname + '/db.sqlite');
 
 /* Parse then execute if the message is a command.
- * @user: username sending the command
- * @message: message being sent
- * @cb(reply, [pm]): callback
- *      reply: reply message
- *      pm: true forces any reply as a pm to the sender
+ * @user            : username sending the command
+ * @message         : message being sent
+ * @cb(reply, [pm]) : callback
+ *      reply : reply message
+ *      pm    : true forces any reply as a pm to the sender
  */
 function parse(user, message, cb) {
     var type = message[0];
     if (type !== "!" && type !== "?") return;
+
+    // log the requested command
+    console.log('(' + user + '): ' + message);
 
     var command = message.slice(1).split(" ");
     var verb    = command[0];
@@ -28,47 +31,26 @@ function parse(user, message, cb) {
     }
     var cmd = template[verb];
 
-    if (!isPermitted(user, cmd.permit)) {
-        return cb("You are not permitted to perform this command.", true);
-    }
+    // check config.master
+    commands.isPermitted(user, cmd.permit, function (permitted) {
 
-    if (type === "?") {
-        return cb(cmd.help + "\n\t" + cmd.syntax, true);
-    }
-
-    // log the requesed command
-    console.log('(' + user + '): ' + message);
-
-    if (type === "!") {
-        if (params.length < cmd.params) {
-            return cb("Incorrect number of parameters required:\n" + cmd.syntax, true);
+        if (!permitted) return cb("You are not permitted to perform this command.", true);
+        if (type === "?") {
+            return cb(cmd.help + "\n\t" + cmd.syntax, true);
         }
 
-        console.log(commands);
-        commands[cmd.call](params, function (reply) {
-            return cb(reply);
-        });
-    }
-}
+        if (type === "!") {
+            if (params.length < cmd.params) {
+                return cb("Incorrect number of parameters required:\n" + cmd.syntax, true);
+            }
 
-/* Check if user is permitted based on the provided permission level
- * @name: username to check
- * @level: the permission level to check against
- */
-function isPermitted(name, level) {
-    // always allow config.master
-    if (name === config.master) return true;
-    commands.db.each("SELECT * FROM user WHERE name = ?", name, function (err, row) {
-        // deny if user not found
-        if (err || typeof row === 'undefined') return false;
-        // deny banned user
-        if (commands.role[row[1]] === commands.role.ban) return false;
-        // allow user if role is anyone
-        if (level === "*") return true;
-        // allow only if user has permissions equal to or higher
-        return (commands.role[row[1]] >= commands.role[level]) ? true : false;
+            commands[cmd.call](params, function (reply) {
+                return cb(reply);
+            });
+        }
     });
 }
+
 
 // create irc client
 var client = new irc.Client(config.server, config.nick, {
