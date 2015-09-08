@@ -1,0 +1,30 @@
+{
+    "user": {
+        "permit" : "master",
+        "call"   : "user",
+        "help"   : "Add, edit, or remove a user permission",
+        "syntax" : "!user <name> master|teacher|ban|none",
+        "params" : 2
+    },
+    "role": {
+        "permit" : "master",
+        "call"   : "role",
+        "help"   : "List all users of a predefined role",
+        "syntax" : "!role master|teacher|ban",
+        "params" : 1
+    },
+    "teach": {
+        "permit" : "teacher",
+        "call"   : "teach",
+        "help"   : "Teaches a new command to the bot that anyone can execute",
+        "syntax" : "!teach <verb> <reply> <# of required params> [help] [syntax]",
+        "params" : 3
+    },
+    "forget": {
+        "permit" : "teacher",
+        "call"   : "forget",
+        "help"   : "Removes a command that the bot has learned.",
+        "syntax" : "!forget <verb>",
+        "params" : 1
+    }
+}
