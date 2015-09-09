@@ -2,7 +2,7 @@
     "user": {
         "permit" : "master",
         "call"   : "user",
-        "reply"  : "User {} {} sucessfully.",
+        "reply"  : "User {} {}",
         "help"   : "Add, edit, or remove a user permission.",
         "syntax" : "!user <name> master|teacher|ban|none",
         "params" : 2
