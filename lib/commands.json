@@ -26,5 +26,12 @@
         "help"   : "Removes a command that the bot has learned.",
         "syntax" : "!forget <verb>",
         "params" : 1
+    },
+    "help": {
+        "permit" : "*",
+        "call"   : "help",
+        "help"   : "Lists all available commands.",
+        "syntax" : "!help",
+        "params" : 0
     }
 }
