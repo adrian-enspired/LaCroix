@@ -17,8 +17,8 @@
         "permit" : "teacher",
         "call"   : "teach",
         "help"   : "Teaches a new command to the bot that anyone can execute",
-        "syntax" : "!teach <verb> <reply> <# of required params> [help] [syntax]",
-        "params" : 3
+        "syntax" : "!teach <verb> <reply> [help] [syntax]",
+        "params" : 2
     },
     "forget": {
         "permit" : "teacher",

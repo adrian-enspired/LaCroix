@@ -5,7 +5,7 @@ var irc      = require('irc');
 var fs       = require('fs');
 
 // config detection and setup!
-var commands = new Commands(__dirname + '/db.sqlite');
+var commands = new Commands(__dirname + '/db.sqlite', config);
 
 // create irc client
 var client = new irc.Client(config.server, config.nick, {
