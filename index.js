@@ -37,7 +37,7 @@ function error(err, target) {
 // listen for all messages in irc
 client.addListener('message', function (from, to, message) {
 
-    var cmd = commands.parseCommand(from, to, message, function (err, cmd) {
+    commands.parseCommand(from, to, message, function (err, cmd) {
         if (err) return error(err, cmd.sender);
 
         // valid command, log attempt
