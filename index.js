@@ -4,6 +4,7 @@ var irc      = require('irc');
 var fs       = require('fs');
 
 // TEMP!
+// create config if it doesn't exist
 try {
     fs.statSync(__dirname + '/config.json');
     config = require('./config.json');
@@ -36,6 +37,11 @@ function error(err, target) {
 
 // listen for all messages in irc
 client.addListener('message', function (from, to, message) {
+
+    commands.auto(message, function (title) {
+        console.log('(' + config.nick + '): ' + title);
+        client.action(config.channel, ": " + title);
+    });
 
     commands.parseCommand(from, to, message, function (err, cmd) {
         if (err) return error(err, cmd.sender);
@@ -76,6 +82,21 @@ client.addListener('message', function (from, to, message) {
                 }
             }
         });
+    });
+});
+
+// memo on join
+client.on('join', function (channel, user) {
+    commands.db.all("SELECT * FROM memo WHERE recipient = ?", user, function (err, rows) {
+        if (err) {
+            console.error(err);
+            return cb("Error performing command.");
+        }
+        if (rows.length === 0) return;
+        client.action(config.channel, user + ": Messages have been left for you while you were offline, they have been PM'd to you.");
+        for (var i in rows) {
+            client.say(user, "Message from " + rows[i].sender + ": " + rows[i].message);
+        }
     });
 });
 

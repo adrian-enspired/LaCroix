@@ -38,5 +38,13 @@
         "help"   : "Lists all available commands.",
         "syntax" : "!help",
         "params" : 0
+    },
+    "memo": {
+        "permit" : "teacher",
+        "call"   : "memo",
+        "reply"  : "Memo {} for {}",
+        "help"   : "Leaves a message for an offline user.",
+        "syntax" : "!memo <user> <message>|none",
+        "params" : 2
     }
 }
