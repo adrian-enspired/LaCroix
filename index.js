@@ -97,6 +97,13 @@ client.on('join', function (channel, user) {
         for (var i in rows) {
             client.say(user, "Message from " + rows[i].sender + ": " + rows[i].message);
         }
+        // delete the messages after notification
+        commands.db.run("DELETE FROM memo WHERE recipient = ?", user, function (err) {
+            if (err) {
+                console.error(err);
+                return cb("Error performing command.");
+            }
+        });
     });
 });
 
