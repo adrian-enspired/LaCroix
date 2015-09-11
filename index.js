@@ -1,10 +1,26 @@
-//var template = require('./lib/commands.json');
 var Commands = require('./lib/commands.js');
-var config   = require('./config.json');
+var config;
 var irc      = require('irc');
 var fs       = require('fs');
 
-// config detection and setup!
+// TEMP!
+try {
+    fs.statSync(__dirname + '/config.json');
+    config = require('./config.json');
+} catch(e) {
+    if (e.code === 'ENOENT') {
+        console.log("No config file found, one has been created for you. Fill it out and run again: ./config.json");
+        var config = {
+            server: "",
+            channel: "",
+            nick: "",
+            master: "",
+        };
+        fs.writeFileSync(__dirname + '/config.json', JSON.stringify(config, 4, null));
+        return;
+    }
+}
+
 var commands = new Commands(__dirname + '/db.sqlite', config);
 
 // create irc client
