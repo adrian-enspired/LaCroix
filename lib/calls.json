@@ -19,7 +19,7 @@
         "permit" : "teacher",
         "call"   : "teach",
         "reply"  : "I now understand how to {}!",
-        "help"   : "Teaches a new command to the bot that anyone can execute",
+        "help"   : "Teaches a new command to the bot that anyone can execute.\nVariable substitution can be used in the reply in the form of {}, {active operator}, or [passive operator].\nType !operators to get a list of available operators.",
         "syntax" : "!teach <verb> <reply> [help] [syntax]",
         "params" : 2
     },
