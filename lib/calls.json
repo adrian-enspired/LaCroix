@@ -43,7 +43,7 @@
         "permit" : "teacher",
         "call"   : "memo",
         "reply"  : "Memo {} for {}",
-        "help"   : "Leaves a message for an offline user.",
+        "help"   : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",
         "syntax" : "!memo <user> <message>|none",
         "params" : 2
     }
