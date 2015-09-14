@@ -1,0 +1,20 @@
+{
+    "onmessage": {
+        "linkinfo":  {
+            "permit" : "*",
+            "match"  : "https?:\\/\\/[www\\.]?.*?\\..*?(?=\\/|$)",
+            "call"   : "linkinfo",
+            "reply"  : "{}"
+        }
+    },
+    "onjoin": {
+        "fetchmemo": {
+            "permit" : "*",
+            "call"   : "fetchmemo",
+            "reply"  : "{}: Messages have been left for you while you were offline, they have been PM'd to you."
+        }
+    },
+    "onleave": {
+
+    }
+}

@@ -28,13 +28,13 @@ try {
     }
 }
 
-var commands = new Commands(__dirname + '/db.sqlite', config);
-
 // create irc client
 var client = new irc.Client(config.server, config.nick, {
     channels: [ config.channel ],
     floodProtection: true,
 });
+
+var commands = new Commands(__dirname + '/db.sqlite', config, client);
 
 function error(err, target) {
     console.error(err);
@@ -44,7 +44,7 @@ function error(err, target) {
 // listen for all messages in irc
 client.addListener('message', function (from, to, message) {
 
-    commands.autoCommands("onmessage", message, function (err, response) {
+    commands.autoCommands("onmessage", message, from, function (err, response) {
         if (err) return error(err);
         console.log('(' + config.nick + '): ' + response);
         client.action(config.channel, ": " + response);
@@ -92,26 +92,11 @@ client.addListener('message', function (from, to, message) {
     });
 });
 
-// TODO: bundle this with autocmds
-// memo on join
 client.on('join', function (channel, user) {
-    commands.db.all("SELECT * FROM memo WHERE recipient = ?", user, function (err, rows) {
-        if (err) {
-            console.error(err);
-            return cb("Error performing command.");
-        }
-        if (rows.length === 0) return;
-        client.action(config.channel, user + ": Messages have been left for you while you were offline, they have been PM'd to you.");
-        for (var i in rows) {
-            client.say(user, "Message from " + rows[i].sender + ": " + rows[i].message);
-        }
-        // delete the messages after notification
-        commands.db.run("DELETE FROM memo WHERE recipient = ?", user, function (err) {
-            if (err) {
-                console.error(err);
-                return cb("Error performing command.");
-            }
-        });
+    commands.autoCommands("onjoin", "", user, function (err, response) {
+        if (err) return error(err);
+        console.log('(' + config.nick + '): ' + response);
+        client.action(config.channel, ": " + response);
     });
 });
 
