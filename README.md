@@ -1,5 +1,5 @@
 # LaCroix
-An IRC bot more refreshing then the beverage it's named after
+An IRC bot just as refreshing as the beverage it's named after.
 
 ##Setup
 1. Clone the repo
@@ -62,6 +62,6 @@ Within the reply, the following operators can be used:
 <code>!findityourself noobie "how to use a search engine"</code>
 
 #####Result:
-<code>[LaCroix]: "Hey noobie, shizy wants to show you the following search results: http://duckduckgo.com/?q=how%20to%20use%20a%20search%20engine"</code>
+<code>[LaCroix]: "Hey noobie, shizy wants to show you the following search results: https://lmddgtfy.net/?q=how%20to%20use%20a%20search%20engine"</code>
 
 Additional passive and active operators can be added to lib/operators.js. Within the new operator <code>this</code> will give you access to the cmd object and all it's information. Active operators also get passed one parameter, their respective command argument.

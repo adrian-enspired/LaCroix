@@ -3,6 +3,12 @@ var config;
 var irc      = require('irc');
 var fs       = require('fs');
 
+// TODO:
+// cleanup config generation/loading
+// nodemailer integration config/toggle
+// !notifyme opt-in
+// autocommands structure
+
 // TEMP!
 // create config if it doesn't exist
 try {
@@ -38,9 +44,10 @@ function error(err, target) {
 // listen for all messages in irc
 client.addListener('message', function (from, to, message) {
 
-    commands.auto(message, function (title) {
-        console.log('(' + config.nick + '): ' + title);
-        client.action(config.channel, ": " + title);
+    commands.autoCommands("onmessage", message, function (err, response) {
+        if (err) return error(err);
+        console.log('(' + config.nick + '): ' + response);
+        client.action(config.channel, ": " + response);
     });
 
     commands.parseCommand(from, to, message, function (err, cmd) {
@@ -85,6 +92,7 @@ client.addListener('message', function (from, to, message) {
     });
 });
 
+// TODO: bundle this with autocmds
 // memo on join
 client.on('join', function (channel, user) {
     commands.db.all("SELECT * FROM memo WHERE recipient = ?", user, function (err, rows) {
