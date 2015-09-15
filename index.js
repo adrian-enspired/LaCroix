@@ -7,7 +7,6 @@ var fs       = require('fs');
 // cleanup config generation/loading
 // nodemailer integration config/toggle
 // !notifyme opt-in
-// autocommands structure
 
 // TEMP!
 // create config if it doesn't exist
@@ -39,6 +38,17 @@ var commands = new Commands(__dirname + '/db.sqlite', config, client);
 function error(err, target) {
     console.error(err);
     if (typeof target !== 'undefined') client.say(target, err);
+}
+
+function respond(response, sender) {
+    for (var type in response) {
+        switch (type) {
+            case 'public'  : client.say(config.channel, response[type]); break;
+            case 'private' : client.say(sender, response[type]); break;
+            case 'action'  : client.action(config.channel, response[type]); break;
+        }
+        console.log('(' + config.nick + '): ' + response[type]);
+    }
 }
 
 // listen for all messages in irc
@@ -78,13 +88,15 @@ client.addListener('message', function (from, to, message) {
                         cmd.args = args;
                         commands.parseReply(cmd, function (err, response) {
                             if (err) return error(err, cmd.sender);
-                            client.say(cmd.target, response);
+                            //client.say(cmd.target, response);
+                            respond(response, cmd.sender);
                         });
                     });
                 } else {
                     commands.parseReply(cmd, function (err, response) {
                         if (err) return error(err, cmd.sender);
-                        client.say(cmd.target, response);
+                        //client.say(cmd.target, response);
+                        respond(response, cmd.sender);
                     });
                 }
             }
@@ -95,8 +107,7 @@ client.addListener('message', function (from, to, message) {
 client.on('join', function (channel, user) {
     commands.autoCommands("onjoin", "", user, function (err, response) {
         if (err) return error(err);
-        console.log('(' + config.nick + '): ' + response);
-        client.action(config.channel, ": " + response);
+        respond(response, user);
     });
 });
 
