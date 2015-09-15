@@ -17,10 +17,10 @@ try {
     if (e.code === 'ENOENT') {
         console.log("No config file found, one has been created for you. Fill it out and run again: ./config.json");
         var config = {
-            server: "",
-            channel: "",
-            nick: "",
-            master: "",
+            server  : "",
+            channel : "",
+            nick    : "",
+            master  : "",
         };
         fs.writeFileSync(__dirname + '/config.json', JSON.stringify(config, 4, null));
         return;
@@ -73,7 +73,8 @@ client.addListener('message', function (from, to, message) {
                 return error("You are not permitted to perform this command.", cmd.sender);
 
             // if help
-            if (cmd.prefix === "?") client.say(cmd.sender, cmd.template.help + "\n\t" + cmd.template.syntax);
+            if (cmd.prefix === "?")
+                respond(cmd.template.help + "\n\t" + cmd.template.syntax, cmd.sender);
 
             // if command
             if (cmd.prefix === "!") {
@@ -88,14 +89,12 @@ client.addListener('message', function (from, to, message) {
                         cmd.args = args;
                         commands.parseReply(cmd, function (err, response) {
                             if (err) return error(err, cmd.sender);
-                            //client.say(cmd.target, response);
                             respond(response, cmd.sender);
                         });
                     });
                 } else {
                     commands.parseReply(cmd, function (err, response) {
                         if (err) return error(err, cmd.sender);
-                        //client.say(cmd.target, response);
                         respond(response, cmd.sender);
                     });
                 }
