@@ -75,7 +75,7 @@ client.addListener('message', function (from, to, message) {
 
             // if help
             if (cmd.prefix === "?")
-                respond(cmd.template.help + "\n\t" + cmd.template.syntax, cmd.sender);
+                respond({ 'private' : cmd.template.help + "\n\t" + cmd.template.syntax }, cmd.sender);
 
             // if command
             if (cmd.prefix === "!") {

@@ -36,8 +36,6 @@ A higher privileged user will have access to all the commands of the lower users
   - <code>!teach \<verb\> \<reply\> [description] [syntax]</code>
 - Forget: forget a learned command
   - <code>!forget \<verb\></code>
-- Memo: Leave a message for an offline user (none removes the message)
-  - <code>!memo \<user\> \<message\>|none</code>
 
 ####Basic Commands
 - Help: lists all commands available to you, also lists all learned commands
@@ -46,6 +44,12 @@ A higher privileged user will have access to all the commands of the lower users
   - <code>?\<verb\></code>
 - Learned Commands: perform any learned command
   - <code>!\<verb\></code>
+- Memo: Leave a message for an offline user (none removes the message)
+  - <code>!memo \<user\> \<message\>|none</code>
+- Notify: Register your email address with the bot to be notified by email when you are offline
+  - <code>!notifyme \<email\>|none</code>
+- Poke: Poke a user who is setup for notifications, they will be notified by email.
+  - <code>!poke \<user\> [message]</code>
 
 #Learning Commands
 Teachers and Masters can use the <code>!teach <verb> <reply></code> command to teach the bot new commands. <code> \<reply\> </code> represents the output response text of the bot, greater than one word responses should be wrapped in quotes.

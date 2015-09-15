@@ -65,7 +65,7 @@
         "reply"   : {
             "private" : "Users {} notify you by email."
         },
-        "help"    : "Allows you to be !poke'd by a user when you are offline. A notification will be sent to the email address you provide.",
+        "help"    : "Allows you to be !poke'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",
         "syntax"  : "!notifyme <email>|none",
         "params"  : 1
     },
