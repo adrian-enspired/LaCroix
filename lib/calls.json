@@ -3,7 +3,7 @@
         "permit"  : "master",
         "call"    : "user",
         "reply"   : {
-            "public" : "User {} {}"
+            "public" : "[me] has made {} {}"
         },
         "help"    : "Add, edit, or remove a user permission.",
         "syntax"  : "!user <name> master|teacher|ban|none",
@@ -58,5 +58,25 @@
         "help"    : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",
         "syntax"  : "!memo <user> <message>|none",
         "params"  : 2
+    },
+    "notifyme": {
+        "permit"  : "*",
+        "call"    : "notifyme",
+        "reply"   : {
+            "private" : "Users {} notify you by email."
+        },
+        "help"    : "Allows you to be !poke'd by a user when you are offline. A notification will be sent to the email address you provide.",
+        "syntax"  : "!notifyme <email>|none",
+        "params"  : 1
+    },
+    "poke": {
+        "permit"  : "*",
+        "call"    : "poke",
+        "reply"   : {
+            "private" : ""
+        },
+        "help"    : "Allows you to notify an offline user by email if they have allowed notifications by email using the !notifyme command.",
+        "syntax"  : "!poke <user> [message]",
+        "params"  : 1
     }
 }
