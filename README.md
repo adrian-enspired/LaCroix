@@ -64,4 +64,10 @@ Within the reply, the following operators can be used:
 #####Result:
 <code>[LaCroix]: "Hey noobie, shizy wants to show you the following search results: https://lmddgtfy.net/?q=how%20to%20use%20a%20search%20engine"</code>
 
-Additional passive and active operators can be added to lib/operators.js. Within the new operator <code>this</code> will give you access to the cmd object and all it's information. Active operators also get passed one parameter, their respective command argument.
+
+#Adding Operators
+Additional passive and active operators can be added to lib/operators.js. Within the new operator the <code>this</code> keyword will give you access to the cmd object and all it's information. Active operators are also passed one parameter, their respective command argument.
+
+#Extending Functionality
+You can edit the lib/calls.js and lib/calls.json files to add new builtin/elevated commands.
+lib/auto.js and lib/auto.json also can be edited to create new autocommands. Documentation for both of these will come in time.

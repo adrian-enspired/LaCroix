@@ -58,8 +58,7 @@ client.addListener('message', function (from, to, message) {
 
     commands.autoCommands("onmessage", message, from, function (err, response) {
         if (err) return error(err);
-        console.log('(' + config.nick + '): ' + response);
-        client.action(config.channel, ": " + response);
+        respond(response);
     });
 
     commands.parseCommand(from, to, message, function (err, cmd) {
