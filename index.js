@@ -4,6 +4,8 @@ var irc      = require('irc');
 var fs       = require('fs');
 
 // TODO:
+// add multi-channel support
+// parting, joining, reconnecting
 // cleanup config generation/loading
 // nodemailer integration config/toggle
 // !notifyme opt-in
@@ -27,13 +29,13 @@ try {
     }
 }
 
+var commands = new Commands(__dirname + '/db.sqlite', config);
 // create irc client
 var client = new irc.Client(config.server, config.nick, {
     channels: [ config.channel ],
     floodProtection: true,
 });
 
-var commands = new Commands(__dirname + '/db.sqlite', config, client);
 
 function error(err, target) {
     console.error(err);
