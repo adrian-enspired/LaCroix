@@ -4,11 +4,10 @@ var irc      = require('irc');
 var fs       = require('fs');
 
 // TODO:
+// better userpermission enforcement!!
 // add multi-channel support
 // parting, joining, reconnecting
 // cleanup config generation/loading
-// nodemailer integration config/toggle
-// !notifyme opt-in
 
 // TEMP!
 // create config if it doesn't exist
@@ -94,6 +93,7 @@ client.addListener('message', function (from, to, message) {
                         });
                     });
                 } else {
+                    cmd.args = { 'public': cmd.args }; //forced public for now!
                     commands.parseReply(cmd, function (err, response) {
                         if (err) return error(err, cmd.sender);
                         respond(response, cmd.sender);
