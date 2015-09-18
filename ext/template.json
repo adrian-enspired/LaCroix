@@ -1,0 +1,67 @@
+{
+    "user" : {
+
+        "user": {
+            "permit"  : "master",
+            "help"    : "Add, edit, or remove a user permission. The second argument must be the user's nickserv account NOT thier nick. To find the account name, perform a whois lookup on the user's nick. They must be registered and logged into nickserv to get the account name.",
+            "syntax"  : "!user <account> master|teacher|none",
+            "params"  : 2
+        },
+        "role": {
+            "permit"   : "master",
+            "help"     : "List all users of a predefined role. The names listed are nickserv account names, NOT nicks.",
+            "syntax"   : "!role master|teacher",
+            "params"   : 1
+        },
+        "teach": {
+            "permit"  : "teacher",
+            "help"    : "Teaches a new command to the bot that anyone can execute.\nVariable substitution can be used in the reply in the form of {}, {active operator}, or [passive operator].\nType !operators to get a list of available operators.",
+            "syntax"  : "!teach <verb> <\"reply\"> [help] [syntax]",
+            "params"  : 2
+        },
+        "forget": {
+            "permit"  : "teacher",
+            "help"    : "Removes a command that the bot has learned.",
+            "syntax"  : "!forget <verb>",
+            "params"  : 1
+        },
+        "help": {
+            "permit"   : "*",
+            "help"     : "Lists all available commands.",
+            "syntax"   : "!help",
+            "params"   : 0
+        },
+        "memo": {
+            "permit"  : "*",
+            "help"    : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",
+            "syntax"  : "!memo <user> \"<message>\"|none",
+            "params"  : 2
+        },
+        "notifyme": {
+            "permit"  : "*",
+            "help"    : "Allows you to be !poke'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",
+            "syntax"  : "!notifyme \"<email>\"|none",
+            "params"  : 1
+        },
+        "poke": {
+            "permit"  : "*",
+            "help"    : "Allows you to notify an offline user by email if they have allowed notifications by email using the !notifyme command.",
+            "syntax"  : "!poke <user> [\"message\"]",
+            "params"  : 1
+        }
+    },
+    "auto" : {
+
+        "linkinfo":  {
+            "permit"  : "*",
+            "trigger" : "privmsg",
+            "match"   : "https?:\\/\\/[www\\.]?.*?\\..*?(?=\\/|$)"
+        },
+
+        "fetchmemo": {
+            "permit"  : "*",
+            "trigger" : "join",
+            "match"   : ""
+        }
+    }
+}

@@ -1,117 +1,179 @@
-var Commands = require('./lib/commands.js');
-var config;
-var irc      = require('irc');
-var fs       = require('fs');
+var operator = require('./ext/operators.js');
+var Resource = require('./lib/resource.js');
+var Command  = require('./lib/command.js');
+var command  = new Command(); // ewwwwwwwww!
+var verbs    = require('./ext/verbs.js');
+var res      = new Resource();
 
-// TODO:
-// better userpermission enforcement!!
-// add multi-channel support
-// parting, joining, reconnecting
-// cleanup config generation/loading
+var TRIGGERS = [
+    'PRIVMSG',
+    'JOIN'
+];
 
-// TEMP!
-// create config if it doesn't exist
-try {
-    fs.statSync(__dirname + '/config.json');
-    config = require('./config.json');
-} catch(e) {
-    if (e.code === 'ENOENT') {
-        console.log("No config file found, one has been created for you. Fill it out and run again: ./config.json");
-        var config = {
-            server  : "",
-            channel : "",
-            nick    : "",
-            master  : "",
-        };
-        fs.writeFileSync(__dirname + '/config.json', JSON.stringify(config, 4, null));
-        return;
-    }
-}
+//TODO: auto commands broke
 
-var commands = new Commands(__dirname + '/db.sqlite', config);
-// create irc client
-var client = new irc.Client(config.server, config.nick, {
-    channels: [ config.channel ],
-    floodProtection: true,
-});
+res.irc.addListener('raw', (input) => {
 
+    // is the output from the bot (loop prevention)
+    if (input.nick === res.config.nick) return;
 
-function error(err, target) {
-    console.error(err);
-    if (typeof target !== 'undefined') client.say(target, err);
-}
+    // check input trigger
+    if (TRIGGERS.indexOf(input.rawCommand) === -1) return;
 
-function respond(response, sender) {
-    for (var type in response) {
-        switch (type) {
-            case 'public'  : client.say(config.channel, response[type]); break;
-            case 'private' : client.say(sender, response[type]); break;
-            case 'action'  : client.action(config.channel, response[type]); break;
-        }
-        console.log('(' + config.nick + '): ' + response[type]);
-    }
-}
+    // attempt to create a valid command object
+    command.parse(input.args[1], input.nick, input.args[0], input.rawCommand.toLowerCase(), (cmd) => {
 
-// listen for all messages in irc
-client.addListener('message', function (from, to, message) {
+        // fetch the command template
+        getCommandTemplate(cmd.verb, cmd.type, (err, info) => {
+            if (err) {
+                sendResponse({ [cmd.sender] : err });
+                return;
+            }
+            console.log('(' + cmd.sender + '): ' + cmd.raw);
+            cmd.template = info.template;
+            cmd.type     = info.type;
 
-    commands.autoCommands("onmessage", message, from, function (err, response) {
-        if (err) return error(err);
-        respond(response);
-    });
+            cmd.template.permit = (typeof cmd.template.permit === 'undefined' || cmd.type === "learned") ? "*" : cmd.template.permit;
 
-    commands.parseCommand(from, to, message, function (err, cmd) {
-        if (err) return error(err, cmd.sender);
+            isPermitted(cmd.sender, cmd.template.permit, (err) => {
+                if (err) {
+                    sendResponse({ [cmd.sender] : err });
+                    return;
+                }
 
-        // valid command, log attempt
-        console.log('(' + from + '): ' + message);
-
-        commands.isPermitted(cmd, function (err, permit) {
-            if (err) return error(err, cmd.sender);
-
-            if (!permit)
-                return error("You are not permitted to perform this command.", cmd.sender);
-
-            // if help
-            if (cmd.prefix === "?")
-                respond({ 'private' : cmd.template.help + "\n\t" + cmd.template.syntax }, cmd.sender);
-
-            // if command
-            if (cmd.prefix === "!") {
-                // parameter check?
-
-                // **********************************************
-                // Dude, clean this up! D:
-                if (typeof cmd.template.call !== 'undefined') {
-                    commands.calls[cmd.template.call].call(commands, cmd, function (err, args) {
-                        if (err) return error(err, cmd.sender);
-
-                        cmd.args = args;
-                        commands.parseReply(cmd, function (err, response) {
-                            if (err) return error(err, cmd.sender);
-                            respond(response, cmd.sender);
-                        });
+                // a command help request?
+                if (cmd.type === "user" && cmd.prefix === "?") {
+                    sendResponse({
+                        [cmd.sender] : cmd.template.help + "\n\t" + cmd.template.syntax
                     });
-                } else {
-                    cmd.args = { 'public': cmd.args }; //forced public for now!
-                    commands.parseReply(cmd, function (err, response) {
-                        if (err) return error(err, cmd.sender);
-                        respond(response, cmd.sender);
+                    return;
+                }
+
+                if (cmd.type === "learned" && cmd.prefix === "!")
+                    parseOperators(cmd, sendResponse);
+
+                if (cmd.args.length < cmd.template.params) {
+                    sendResponse({
+                        [cmd.sender] : "Not enough arguments."
+                    });
+                    return;
+                }
+
+                if ((cmd.type === "user" && cmd.prefix === "!") || cmd.type === "auto") {
+                    verbs[cmd.type][cmd.verb].call(res, cmd, (err, response) => {
+                        if (err) console.error(err);
+                        sendResponse(response);
                     });
                 }
-            }
+            });
         });
     });
 });
 
-client.on('join', function (channel, user) {
-    commands.autoCommands("onjoin", "", user, function (err, response) {
-        if (err) return error(err);
-        respond(response, user);
-    });
-});
+/* Parse the response object and send a response to the specified recipients
+ *
+ * @response : the response object
+ */
+var sendResponse = (response) => {
+    if (typeof response.broadcast !== 'undefined') {
+        // for every channel!
+        response[res.config.channel] = response.broadcast;
+        delete response.broadcast;
+    }
+    for (var recipient in response) {
+        res.irc.say(recipient, response[recipient]);
+        console.log('(' + res.config.nick + '): ' + response[recipient]);
+    }
+};
 
-// irc client errors
-client.on('error', function (err) {
-    error(err, config.master);
-});
+var parseOperators = (cmd, cb) => {
+    var args    = cmd.args;
+    var reply   = cmd.template.public;
+    var param   = 0;
+    var match;
+    var matches = reply.match(/[{|\[].*?[}|\]]/g);
+    if (matches !== null) {
+        for (var i in matches) {
+            var op = matches[i].replace(/[{|\[|}|\]]/g, '');
+            if (op.trim() !== "" && !operator.hasOwnProperty(op))
+                return cb({
+                    [cmd.sender] : "Invalid operator in command: " + op
+                });
+
+            // variable or active operator
+            if (matches[i][0] === "{") {
+                if (param >= args.length)
+                    return cb({
+                        [cmd.sender] : "Incorrect number of required parameters."
+                    });
+                match = (op.trim() === "") ? match = args[param++] :
+                    operator[op].call(res, cmd, args[param++]);
+            }
+
+            // pasive operator
+            if (matches[i][0] === "[") match = operator[op].call(res, cmd);
+            reply = reply.replace(matches[i], match);
+        }
+    }
+    var target = (cmd.recipient === res.bot) ? cmd.sender : cmd.recipient;
+    return cb({ [target] : reply });
+};
+
+/* Searches the json templates and sqlite db for a command template
+ * associated with the provided command verb and type.
+ *
+ * @verb : the verb to search for
+ * @type : the type of command to search in
+ * cb    :
+ *  err  : error, null otherwise
+ *  info : an object containing the template and the type
+ */
+var getCommandTemplate = (verb, type, cb) => {
+
+    // predefined command?
+    if (typeof type === 'undefined') return cb("Command not found.");
+    for (var title in res.template[type]) {
+        if (title === verb) return cb(null, {
+            template : res.template[type][title],
+            type     : type
+        });
+    }
+
+    // learned command?
+    res.db.get("SELECT * FROM command WHERE verb = ?", verb, (err, row) => {
+        if (err || typeof row === 'undefined') return cb("Command not found.");
+        return cb(null, {
+            template : row,
+            type     : "learned"
+        });
+    });
+};
+
+/* Checks to see if a user is permitted based on the command permit
+ *
+ * @user   : the user nick to check
+ * @permit : the command permit to check against
+ * cb      :
+ *  err    : error, null otherwise
+ */
+var isPermitted = (user, permit, cb) => {
+    // can anyone perform this command?
+    if (permit === "*") return cb();
+    // must be an elevated command, check if user is logged into nickserv
+    //res.irc.whois(user, (info) => {
+    res.whois(user, (account) => {
+        if (!account) return cb("You must be registered and logged into nickserv to perform that command.");
+        // is the does the user's account match config.master?
+        if (account === res.config.master) return cb();
+        // the user is logged in, do we have a record of their account name?
+        res.db.get("SELECT * FROM user WHERE account = ?", account, (err, row) => {
+            if (err) cb("Error lookup up user permissions.");
+            if (typeof row === 'undefined')
+                return cb("You are not permitted to perform this command");
+            // only allow if users permissions are equal to or higher command permit
+            return (res.ROLES[row.role] >= res.ROLES[permit]) ?
+                cb() :
+                cb("You are not permitted to perform this command.");
+        });
+    });
+};

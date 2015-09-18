@@ -1,18 +1,16 @@
 {
   "name": "lacroix",
   "version": "1.0.0",
-  "description": "IRC bot for #css-tricks on freenode",
+  "description": "IRC Bot for #css-tricks on freenode",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Robert \"shizy\" Winterstein",
+  "author": "Robert 'shizy' Winterstein",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^0.19.0",
     "irc": "^0.3.12",
     "nodemailer": "^1.4.0",
-    "request": "^2.61.0",
-    "sqlite3": "^3.0.10"
+    "sqlite3": "^3.1.0"
   }
 }
