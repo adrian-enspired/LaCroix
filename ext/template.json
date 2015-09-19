@@ -66,6 +66,12 @@
             "help"    : "Allows you to notify an offline user by email if they have allowed notifications by email using the !notifyme command.",
             "syntax"  : "!notify <user> [\"message\"]",
             "params"  : 1
+        },
+        "notifiable": {
+            "permit"  : "*",
+            "help"    : "Lists users who have allowed themselves to be notified by email.",
+            "syntax"  : "!notifiable",
+            "params"  : 0
         }
     },
     "auto" : {

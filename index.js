@@ -11,8 +11,6 @@ var TRIGGERS = [
 ];
 
 //TODO:
-// user bans
-// list notifyable users
 // README for extendibility
 // list operators
 // change to array=>object based response objects

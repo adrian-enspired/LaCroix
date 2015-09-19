@@ -26,9 +26,13 @@ Leave a message for an offline user, the message will be delivered to them the n
 Allow yourself !poke(ed) by online users and notified by email if you are offline ("none" disables email notification):<br/>
 <code>!notifyme \<"email address"\>|none</code>
 
-####poke
+####notify
 Sends an email notification to an offline user. This will only work if the user has setup email notifications using !notifyme:<br/>
-<code>!poke \<nick\> [message]</code>
+<code>!notify \<nick\> [message]</code>
+
+###notifiable
+Lists all users who have allowed themselves to be notified by email:<br/>
+<code>!notifiable</code>
 
 ####teach
 Teaches the bot a new command. Refer to the Teaching Commands section below for more information:<br/>
@@ -38,9 +42,21 @@ Teaches the bot a new command. Refer to the Teaching Commands section below for 
 Deletes a previously learned command:<br/>
 <code>!forget \<verb\></code>
 
-####role
+####ban
+Bans a host from interacting with the bot:<br/>
+<code>!ban <host></code>
+
+####unban
+Unbans a host, allowing them to interact with the bot:<br/>
+<code>!unban <host></code>
+
+####bans
+Lists all banned hosts:<br/>
+<code>!bans</code>
+
+####users
 Checks which user accounts have a particular permission level. Results list the nickserv account names of the user, NOT their nick:<br/>
-<code>!role master|teacher</code>
+<code>!users master|teacher</code>
 
 ####user
 Adjusts a user's permission level. You must specify the user's nickserv account name, NOT their nick (none removes all permissions):<br/>
@@ -50,6 +66,8 @@ Adjusts a user's permission level. You must specify the user's nickserv account 
 There are two permission levels: masters and teachers. Masters have access to all commands, including the ability to adjust user permissions. Teachers can't adjust user permissions, but they can still teach the bot new commands.
 
 All non-specified users have access to any learned command, and many of the basic communicative commands (!memo, !notifme, !poke, etc.)
+
+Banned hosts have no access to any commands.
 
 ##Teaching Commands
 The syntax for teaching the bot a new command is:
@@ -83,4 +101,3 @@ Result: <code>[LaCroix]: [LaCroix] <3's shizy</code><br/>
 
 #Extensibility
 ... documentation to come
-

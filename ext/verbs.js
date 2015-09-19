@@ -225,6 +225,19 @@ verbs.user = {
             });
         });
     },
+
+    // Lists all notifiable users
+    // !notifiable
+    notifiable : function (cmd, cb) {
+        var users = [];
+        this.db.each("SELECT * FROM notify", (err, row) => {
+            users.push(row.name);
+        }, () => {
+            return cb(null,  {
+                [cmd.sender] : "Notifiable Users: " + users.join(", ")
+            });
+        });
+    },
 };
 verbs.auto = {
 
