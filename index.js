@@ -1,6 +1,7 @@
 var operator = require('./ext/operators.js');
 var Resource = require('./lib/resource.js');
-var command  = require('./lib/command.js');
+var Command  = require('./lib/command.js');
+var command  = new Command(); // ewwwwwww
 var verbs    = require('./ext/verbs.js');
 var res      = new Resource();
 
@@ -12,8 +13,9 @@ var TRIGGERS = [
 //TODO:
 // user bans
 // list notifyable users
-// README
+// README for extendibility
 // list operators
+// change to array=>object based response objects
 
 res.irc.addListener('raw', (input) => {
 
@@ -24,7 +26,7 @@ res.irc.addListener('raw', (input) => {
     if (TRIGGERS.indexOf(input.rawCommand) === -1) return;
 
     // attempt to create a valid command object
-    command.parse(input.args[1], input.nick, input.args[0], input.rawCommand.toLowerCase(), (cmd) => {
+    command.parse(input.args[1], { nick: input.nick, host: input.host }, input.args[0], input.rawCommand.toLowerCase(), (cmd) => {
 
         // fetch the command template
         getCommandTemplate(cmd.verb, cmd.type, (err, info) => {
@@ -38,7 +40,7 @@ res.irc.addListener('raw', (input) => {
 
             cmd.template.permit = (typeof cmd.template.permit === 'undefined' || cmd.type === "learned") ? "*" : cmd.template.permit;
 
-            isPermitted(cmd.sender, cmd.template.permit, (err) => {
+            isPermitted(cmd, (err) => {
                 if (err) {
                     sendResponse({ [cmd.sender] : err });
                     return;
@@ -52,6 +54,7 @@ res.irc.addListener('raw', (input) => {
                     return;
                 }
 
+                // a learned command?
                 if (cmd.type === "learned" && cmd.prefix === "!")
                     parseOperators(cmd, sendResponse);
 
@@ -62,6 +65,7 @@ res.irc.addListener('raw', (input) => {
                     return;
                 }
 
+                // a user command?
                 if ((cmd.type === "user" && cmd.prefix === "!") || cmd.type === "auto") {
                     verbs[cmd.type][cmd.verb].call(res, cmd, (err, response) => {
                         if (err) console.error(err);
@@ -158,6 +162,13 @@ var getCommandTemplate = (verb, type, cb) => {
     });
 };
 
+var isBanned = (host, cb) => {
+    res.db.get("SELECT * FROM ban WHERE host = ?", host, (err, row) => {
+        if (err || typeof row !== 'undefined') return cb(true);
+        return cb(false);
+    });
+};
+
 /* Checks to see if a user is permitted based on the command permit
  *
  * @user   : the user nick to check
@@ -165,24 +176,30 @@ var getCommandTemplate = (verb, type, cb) => {
  * cb      :
  *  err    : error, null otherwise
  */
-var isPermitted = (user, permit, cb) => {
-    // can anyone perform this command?
-    if (permit === "*") return cb();
-    // must be an elevated command, check if user is logged into nickserv
-    //res.irc.whois(user, (info) => {
-    res.whois(user, (account) => {
-        if (!account) return cb("You must be registered and logged into nickserv to perform that command.");
-        // is the does the user's account match config.master?
-        if (account === res.config.master) return cb();
-        // the user is logged in, do we have a record of their account name?
-        res.db.get("SELECT * FROM user WHERE account = ?", account, (err, row) => {
-            if (err) cb("Error lookup up user permissions.");
-            if (typeof row === 'undefined')
-                return cb("You are not permitted to perform this command");
-            // only allow if users permissions are equal to or higher command permit
-            return (res.ROLES[row.role] >= res.ROLES[permit]) ?
-                cb() :
-                cb("You are not permitted to perform this command.");
+var isPermitted = (cmd, cb) => {
+
+    isBanned(cmd.host, (banned) => {
+        var user   = cmd.sender;
+        var permit = cmd.template.permit;
+        // can anyone perform this command?
+        if (permit === "*" && !banned) return cb();
+        // must be an elevated command, check if user is logged into nickserv
+        res.whois(user, (account) => {
+            if (!account && !banned) return cb("You must be registered and logged into nickserv to perform that command.");
+            // does the user's account match config.master?
+            if (account === res.config.master) return cb();
+            // is the account banned?
+            if (banned) return cb("You are banned.");
+            // the user is logged in, do we have a record of their account name?
+            res.db.get("SELECT * FROM user WHERE account = ?", account, (err, row) => {
+                if (err) cb("Error lookup up user permissions.");
+                if (typeof row === 'undefined')
+                    return cb("You are not permitted to perform this command");
+                // only allow if users permissions are equal to or higher command permit
+                return (res.ROLES[row.role] >= res.ROLES[permit]) ?
+                    cb() :
+                    cb("You are not permitted to perform this command.");
+            });
         });
     });
 };

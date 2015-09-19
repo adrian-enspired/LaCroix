@@ -7,11 +7,29 @@
             "syntax"  : "!user <account> master|teacher|none",
             "params"  : 2
         },
-        "role": {
+        "users": {
             "permit"   : "master",
             "help"     : "List all users of a predefined role. The names listed are nickserv account names, NOT nicks.",
-            "syntax"   : "!role master|teacher",
+            "syntax"   : "!users master|teacher",
             "params"   : 1
+        },
+        "ban": {
+            "permit"  : "master",
+            "help"    : "Bans a user by hostname (IP)",
+            "syntax"  : "!ban <host>",
+            "params"  : 1
+        },
+        "unban": {
+            "permit"  : "master",
+            "help"    : "Lifts a ban on a hostname (IP)",
+            "syntax"  : "!unban <host>",
+            "params"  : 1
+        },
+        "bans": {
+            "permit"  : "master",
+            "help"    : "Lists all banned hosts.",
+            "syntax"  : "!bans",
+            "params"  : 0
         },
         "teach": {
             "permit"  : "teacher",
@@ -34,19 +52,19 @@
         "memo": {
             "permit"  : "*",
             "help"    : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",
-            "syntax"  : "!memo <user> \"<message>\"|none",
+            "syntax"  : "!memo <user> <\"message\">|none",
             "params"  : 2
         },
         "notifyme": {
             "permit"  : "*",
-            "help"    : "Allows you to be !poke'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",
+            "help"    : "Allows you to be !notify'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",
             "syntax"  : "!notifyme \"<email>\"|none",
             "params"  : 1
         },
-        "poke": {
+        "notify": {
             "permit"  : "*",
             "help"    : "Allows you to notify an offline user by email if they have allowed notifications by email using the !notifyme command.",
-            "syntax"  : "!poke <user> [\"message\"]",
+            "syntax"  : "!notify <user> [\"message\"]",
             "params"  : 1
         }
     },

@@ -45,8 +45,8 @@ verbs.user = {
     },
 
     // List all users of a role
-    // !role master|teacher
-    role : function (cmd, cb) {
+    // !users master|teacher
+    users : function (cmd, cb) {
         if (!this.ROLES.hasOwnProperty(cmd.args[0]))
             return cb(null, {
                 [cmd.sender] : "Invalid role."
@@ -59,6 +59,43 @@ verbs.user = {
             for (var i in rows) { role.push(rows[i].account); }
             return cb(null, {
                 [cmd.sender] : cmd.args[0] + "s: " + role.join(", ")
+            });
+        });
+    },
+
+    // Ban a user by ip
+    // !ban <host>
+    ban : function (cmd, cb) {
+        var host = cmd.args[0];
+        this.db.run("REPLACE INTO ban (host) VALUES (?)", host, (err) => {
+            if (err) return cb("Error performing command.");
+            return cb(null, {
+                [cmd.sender] : host + " is now banned from all commands."
+            });
+        });
+    },
+
+    // Unban's a user by ip
+    // !unban <host>
+    unban : function (cmd, cb) {
+        var host = cmd.args[0];
+        this.db.run("DELETE FROM ban WHERE host = ?", host, (err) =>  {
+           if (err) return cb("Error performing command.");
+           return cb(null, {
+               [cmd.sender] : host + " is now unbanned"
+           });
+        });
+    },
+
+    // Lists all banned hosts
+    // !bans
+    bans : function (cmd, cb) {
+        var hosts = [];
+        this.db.each("SELECT * FROM ban", (err, row) => {
+            hosts.push(row.host);
+        }, () => {
+            return cb(null,  {
+                [cmd.sender] : "Hosts: " + hosts.join(", ")
             });
         });
     },
@@ -109,7 +146,7 @@ verbs.user = {
             learned.push(row.verb);
         }, () => {
             return cb(null, {
-                [cmd.sender] : "The following commands are available to you:\nElevated Commands: " + builtin.join(", ") + "\nLearned Commands: " + learned.join(", ")
+                [cmd.sender] : "The following commands are available:\nType ?<command> to get help and syntax information about that command.\n\tElevated Commands: " + builtin.join(", ") + "\n\tLearned Commands: " + learned.join(", ")
             });
         });
     },
@@ -165,10 +202,9 @@ verbs.user = {
         }
     },
 
-    // change from nick to account
-    // Pokes an offline user, sending them an email notification
-    // !poke <user> [message]
-    poke : function (cmd, cb) {
+    // Notifies an offline user, sending them an email notification
+    // !notify <user> [message]
+    notify : function (cmd, cb) {
         var message = (cmd.args.length === 1) ?
                       "User " + cmd.sender + " has poked you." :
                       cmd.sender + ": " + cmd.args[1];
