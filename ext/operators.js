@@ -2,7 +2,10 @@ module.exports = {
 
     // active operators {}
     ddg : function (cmd, arg) {
-        return "http://duckduckgo.com/?q=" + arg.replace(" ", "%20");
+        return "http://duckduckgo.com/?q=" + encodeURIComponent(arg);
+    },
+    lmddgtfy : function (cmd, arg) {
+        return "http://lmddgtfy.net/?q=" + encodeURIComponent(arg);
     },
 
     // passive operators []

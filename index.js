@@ -1,7 +1,6 @@
 var operator = require('./ext/operators.js');
 var Resource = require('./lib/resource.js');
-var Command  = require('./lib/command.js');
-var command  = new Command(); // ewwwwwwwww!
+var command  = require('./lib/command.js');
 var verbs    = require('./ext/verbs.js');
 var res      = new Resource();
 
@@ -10,7 +9,11 @@ var TRIGGERS = [
     'JOIN'
 ];
 
-//TODO: auto commands broke
+//TODO:
+// user bans
+// list notifyable users
+// README
+// list operators
 
 res.irc.addListener('raw', (input) => {
 
@@ -86,6 +89,12 @@ var sendResponse = (response) => {
     }
 };
 
+/* Parses output for learned commands
+ *
+ * @cmd      : the command object
+ * @cb       :
+ *  response : the response object
+ */
 var parseOperators = (cmd, cb) => {
     var args    = cmd.args;
     var reply   = cmd.template.public;

@@ -66,7 +66,6 @@ verbs.user = {
     // Teaches the bot a new command
     // !teach <verb> "reply {w/ functions}" <params> [help] [syntax]
     teach : function (cmd, cb) {
-        console.log(cmd);
         //TODO: CHECK FOR INVALID operators
         var verb   = cmd.args[0];
         var reply  = cmd.args[1];
@@ -79,7 +78,7 @@ verbs.user = {
             });
         this.db.run("INSERT INTO command (verb, public, help, syntax) VALUES (?, ?, ?, ?)", verb, reply, help, syntax, (err) => {
             if (err) return cb(err, {
-                [cmd.sender] : "Error teaching command."
+                [cmd.sender] : "Error teaching command, or command already exists."
             });
             return cb(null, {
                 'broadcast' : "I have learned how to " + verb + "!"
