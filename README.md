@@ -14,7 +14,7 @@ An IRC bot just as refreshing as the beverage it's named after.
 
 ####help
 This will list all available commands, the response will be PM'd to you:<br/>
-<code>!help</code>
+<code>!help</code><br/>
 To get help for a particular command, prefix that command with a <code>?</code><br/>
 Ex: <code>?memo</code>
 

@@ -11,7 +11,6 @@ var TRIGGERS = [
 
 //TODO:
 // README for extendibility
-// list operators
 
 res.irc.addListener('raw', (input) => {
 
@@ -36,6 +35,7 @@ res.irc.addListener('raw', (input) => {
 
             cmd.template.permit = (typeof cmd.template.permit === 'undefined' || cmd.type === "learned") ? "*" : cmd.template.permit;
 
+            // is the user permitted to run the command?
             isPermitted(cmd, (err) => {
                 if (err) {
                     sendResponse([ { recipient : cmd.sender, message : err } ]);
@@ -55,6 +55,8 @@ res.irc.addListener('raw', (input) => {
                 if (cmd.type === "learned" && cmd.prefix === "!")
                     parseOperators(cmd, sendResponse);
 
+                // must be an auto or user command
+                // are there enough arguments for the user or auto command?
                 if (cmd.args.length < cmd.template.params) {
                     sendResponse([
                         { recipient : cmd.sender,
@@ -63,7 +65,7 @@ res.irc.addListener('raw', (input) => {
                     return;
                 }
 
-                // a user command?
+                // a user or auto command?
                 if ((cmd.type === "user" && cmd.prefix === "!") || cmd.type === "auto") {
                     verbs[cmd.type][cmd.verb].call(res, cmd, (err, response) => {
                         if (err) console.error(err);
@@ -161,6 +163,12 @@ var getCommandTemplate = (verb, type, cb) => {
     });
 };
 
+/* Checks to see if a host is banned
+ *
+ * @host   : The host to check
+ * cb      :
+ *  banned : true if banned, false otherwise
+ */
 var isBanned = (host, cb) => {
     res.db.get("SELECT * FROM ban WHERE host = ?", host, (err, row) => {
         if (err || typeof row !== 'undefined') return cb(true);

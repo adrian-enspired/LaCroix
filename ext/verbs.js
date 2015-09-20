@@ -53,7 +53,6 @@ verbs.user = {
             }
     },
 
-    // TODO: List all users, don't specify role
     // List all users of a role
     // !users
     users : function (cmd, cb) {
@@ -120,10 +119,10 @@ verbs.user = {
         });
     },
 
+    //TODO: CHECK FOR INVALID operators
     // Teaches the bot a new command
     // !teach <verb> "reply {w/ functions}" <params> [help] [syntax]
     teach : function (cmd, cb) {
-        //TODO: CHECK FOR INVALID operators
         var verb   = cmd.args[0];
         var reply  = cmd.args[1];
         var help   = cmd.args[2] || "";
