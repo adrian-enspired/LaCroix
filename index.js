@@ -11,7 +11,6 @@ var TRIGGERS = [
 
 //TODO:
 // README for extendibility
-// improve agument matching regex to include single quotes
 
 res.irc.addListener('raw', (input) => {
 
