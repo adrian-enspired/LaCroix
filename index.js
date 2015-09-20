@@ -29,7 +29,7 @@ res.irc.addListener('raw', (input) => {
         // fetch the command template
         getCommandTemplate(cmd.verb, cmd.type, (err, info) => {
             if (err) {
-                sendResponse({ [cmd.sender] : err });
+                sendResponse([ { recipient : cmd.sender, message : err } ]);
                 return;
             }
             console.log('(' + cmd.sender + '): ' + cmd.raw);
@@ -40,15 +40,16 @@ res.irc.addListener('raw', (input) => {
 
             isPermitted(cmd, (err) => {
                 if (err) {
-                    sendResponse({ [cmd.sender] : err });
+                    sendResponse([ { recipient : cmd.sender, message : err } ]);
                     return;
                 }
 
                 // a command help request?
                 if (cmd.type === "user" && cmd.prefix === "?") {
-                    sendResponse({
-                        [cmd.sender] : cmd.template.help + "\n\t" + cmd.template.syntax
-                    });
+                    sendResponse([
+                        { recipient : cmd.sender,
+                          message   : cmd.template.help + "\n\t" + cmd.template.syntax }
+                    ]);
                     return;
                 }
 
@@ -57,9 +58,10 @@ res.irc.addListener('raw', (input) => {
                     parseOperators(cmd, sendResponse);
 
                 if (cmd.args.length < cmd.template.params) {
-                    sendResponse({
-                        [cmd.sender] : "Not enough arguments."
-                    });
+                    sendResponse([
+                        { recipient : cmd.sender,
+                          message   : "Not enough arguments." }
+                    ]);
                     return;
                 }
 
@@ -80,14 +82,13 @@ res.irc.addListener('raw', (input) => {
  * @response : the response object
  */
 var sendResponse = (response) => {
-    if (typeof response.broadcast !== 'undefined') {
-        // for every channel!
-        response[res.config.channel] = response.broadcast;
-        delete response.broadcast;
-    }
-    for (var recipient in response) {
-        res.irc.say(recipient, response[recipient]);
-        console.log('(' + res.config.nick + '): ' + response[recipient]);
+    for (var i in response) {
+        if (response[i].recipient === 'broadcast') {
+            // for every channel!
+            response[i].recipient = res.config.channel;
+        }
+        res.irc.say(response[i].recipient, response[i].message);
+        console.log('(' + res.config.nick + '): ' + response[i].message);
     }
 };
 
@@ -107,16 +108,18 @@ var parseOperators = (cmd, cb) => {
         for (var i in matches) {
             var op = matches[i].replace(/[{|\[|}|\]]/g, '');
             if (op.trim() !== "" && !operator.hasOwnProperty(op))
-                return cb({
-                    [cmd.sender] : "Invalid operator in command: " + op
-                });
+                return cb([
+                    { recipient : cmd.sender,
+                      message   : "Invalid operator in command: " + op }
+                ]);
 
             // variable or active operator
             if (matches[i][0] === "{") {
                 if (param >= args.length)
-                    return cb({
-                        [cmd.sender] : "Incorrect number of required parameters."
-                    });
+                    return cb([
+                        { recipient : cmd.sender,
+                          message   : "Incorrect number of required parameters." }
+                    ]);
                 match = (op.trim() === "") ? match = args[param++] :
                     operator[op].call(res, cmd, args[param++]);
             }
@@ -127,7 +130,7 @@ var parseOperators = (cmd, cb) => {
         }
     }
     var target = (cmd.recipient === res.bot) ? cmd.sender : cmd.recipient;
-    return cb({ [target] : reply });
+    return cb([ { recipient : target, message : reply } ]);
 };
 
 /* Searches the json templates and sqlite db for a command template
