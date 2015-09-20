@@ -61,6 +61,12 @@
             "syntax"  : "!memo <user> <\"message\">|none",
             "params"  : 2
         },
+        "memos": {
+            "permit"  : "*",
+            "help"    : "Lists all memos that you have left for other users",
+            "syntax"  : "!memos",
+            "params"  : 0
+        },
         "notifyme": {
             "permit"  : "*",
             "help"    : "Allows you to be !notify'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",

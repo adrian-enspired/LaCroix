@@ -14,7 +14,7 @@ An IRC bot just as refreshing as the beverage it's named after.
 
 ####help
 This will list all available commands, the response will be PM'd to you:<br/>
-<code>!help</code>
+<code>!help</code><br/>
 To get help for a particular command, prefix that command with a <code>?</code><br/>
 Ex: <code>?memo</code>
 
@@ -25,6 +25,10 @@ Lists all available operators usable when teaching commands:<br/>
 ####memo
 Leave a message for an offline user, the message will be delivered to them the next time they join the channel ("none" deletes the message):<br/>
 <code>!memo \<nick\> \<message\>|none</code>
+
+####memos
+Lists all memos you've left for other users:<br/>
+<code>!memos</code>
 
 ####notifyme
 Allow yourself !poke(ed) by online users and notified by email if you are offline ("none" disables email notification):<br/>
