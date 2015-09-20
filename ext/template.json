@@ -49,6 +49,12 @@
             "syntax"   : "!help",
             "params"   : 0
         },
+        "operators": {
+            "permit"   : "teacher",
+            "help"     : "Lists all available operators",
+            "syntax"   : "!operators",
+            "params"   : 0
+        },
         "memo": {
             "permit"  : "*",
             "help"    : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",

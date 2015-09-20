@@ -18,6 +18,10 @@ This will list all available commands, the response will be PM'd to you:<br/>
 To get help for a particular command, prefix that command with a <code>?</code><br/>
 Ex: <code>?memo</code>
 
+####operators
+Lists all available operators usable when teaching commands:<br/>
+<code>!operators</code>
+
 ####memo
 Leave a message for an offline user, the message will be delivered to them the next time they join the channel ("none" deletes the message):<br/>
 <code>!memo \<nick\> \<message\>|none</code>
@@ -30,7 +34,7 @@ Allow yourself !poke(ed) by online users and notified by email if you are offlin
 Sends an email notification to an offline user. This will only work if the user has setup email notifications using !notifyme:<br/>
 <code>!notify \<nick\> [message]</code>
 
-###notifiable
+####notifiable
 Lists all users who have allowed themselves to be notified by email:<br/>
 <code>!notifiable</code>
 

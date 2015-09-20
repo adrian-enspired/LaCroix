@@ -53,6 +53,7 @@ verbs.user = {
             }
     },
 
+    // TODO: List all users, don't specify role
     // List all users of a role
     // !users master|teacher
     users : function (cmd, cb) {
@@ -173,9 +174,19 @@ verbs.user = {
         }, () => {
             return cb(null, [
                 { recipient : cmd.sender,
-                  message   : "The following commands are available:\nType ?<command> to get help and syntax information about that command.\n\tElevated Commands: " + builtin.join(", ") + "\n\tLearned Commands: " + learned.join(", ") }
+                  message   : "The following commands are available:\nType ?<command> to get help and syntax information about that command.\n\tElevated Commands: " + builtin.join(", ") + "\n\tLearned Commands: " + learned.join(", ") + "\nConsult https://github.com/shizy/LaCroix for more information." }
             ]);
         });
+    },
+
+    // TODO: expand to include help text for each operator, seperate by type!
+    // Lists all available operators
+    // !operators
+    operators : function (cmd, cb) {
+        return cb(null, [
+            { recipient : cmd.sender,
+              message   : "Operators: " + Object.keys(this.operator).join(", ") }
+        ]);
     },
 
     // Leaves a message for an offline user

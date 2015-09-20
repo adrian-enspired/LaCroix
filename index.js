@@ -1,4 +1,3 @@
-var operator = require('./ext/operators.js');
 var Resource = require('./lib/resource.js');
 var Command  = require('./lib/command.js');
 var command  = new Command(); // ewwwwwww
@@ -13,7 +12,6 @@ var TRIGGERS = [
 //TODO:
 // README for extendibility
 // list operators
-// change to array=>object based response objects
 
 res.irc.addListener('raw', (input) => {
 
@@ -107,7 +105,7 @@ var parseOperators = (cmd, cb) => {
     if (matches !== null) {
         for (var i in matches) {
             var op = matches[i].replace(/[{|\[|}|\]]/g, '');
-            if (op.trim() !== "" && !operator.hasOwnProperty(op))
+            if (op.trim() !== "" && !res.operator.hasOwnProperty(op))
                 return cb([
                     { recipient : cmd.sender,
                       message   : "Invalid operator in command: " + op }
@@ -121,11 +119,11 @@ var parseOperators = (cmd, cb) => {
                           message   : "Incorrect number of required parameters." }
                     ]);
                 match = (op.trim() === "") ? match = args[param++] :
-                    operator[op].call(res, cmd, args[param++]);
+                    res.operator[op].call(res, cmd, args[param++]);
             }
 
             // pasive operator
-            if (matches[i][0] === "[") match = operator[op].call(res, cmd);
+            if (matches[i][0] === "[") match = res.operator[op].call(res, cmd);
             reply = reply.replace(matches[i], match);
         }
     }
