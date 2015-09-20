@@ -60,7 +60,7 @@ Lists all banned hosts:<br/>
 
 ####users
 Checks which user accounts have a particular permission level. Results list the nickserv account names of the user, NOT their nick:<br/>
-<code>!users master|teacher</code>
+<code>!users</code>
 
 ####user
 Adjusts a user's permission level. You must specify the user's nickserv account name, NOT their nick (none removes all permissions):<br/>

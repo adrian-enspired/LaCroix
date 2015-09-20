@@ -10,8 +10,8 @@
         "users": {
             "permit"   : "master",
             "help"     : "List all users of a predefined role. The names listed are nickserv account names, NOT nicks.",
-            "syntax"   : "!users master|teacher",
-            "params"   : 1
+            "syntax"   : "!users",
+            "params"   : 0
         },
         "ban": {
             "permit"  : "master",

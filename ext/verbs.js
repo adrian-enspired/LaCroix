@@ -55,23 +55,21 @@ verbs.user = {
 
     // TODO: List all users, don't specify role
     // List all users of a role
-    // !users master|teacher
+    // !users
     users : function (cmd, cb) {
-        if (!this.ROLES.hasOwnProperty(cmd.args[0]))
-            return cb(null, [
-                { recipient : cmd.sender,
-                  message   : "Invalid role." }
-            ]);
-        var role = [];
-        this.db.all("SELECT account FROM user WHERE role = ?", cmd.args[0], (err, rows) => {
+        var masters  = [];
+        var teachers = [];
+        this.db.each("SELECT * FROM user", (err, row) => {
             if (err) return cb(err, [
                 { recipient : cmd.sender,
                   message   : "Error performing command." }
             ]);
-            for (var i in rows) { role.push(rows[i].account); }
+            if (row.role === "master")  masters.push(row.account);
+            if (row.role === "teacher") teachers.push(row.account);
+        }, () => {
             return cb(null, [
                 { recipient : cmd.sender,
-                  message   : cmd.args[0] + "s: " + role.join(", ") }
+                  message   : "Masters : " + masters.join(", ") + "\n" + "Teachers: " + teachers.join(", ") }
             ]);
         });
     },
