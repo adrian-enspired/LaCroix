@@ -221,8 +221,8 @@ verbs.user = {
     // !memos
     memos : function (cmd, cb) {
         var messages = [];
-        this.db.each("SELECT * FROM memo WHERE recipient", (err, row) => {
-            messages.push(row.message);
+        this.db.each("SELECT * FROM memo WHERE sender = ?", cmd.sender, (err, row) => {
+            messages.push(row.recipient + ": " + row.message);
         }, () => {
             return cb(null,  [
                 { recipient : cmd.sender,
@@ -341,13 +341,16 @@ verbs.auto = {
         console.log(cmd.match);
     },
 
+    // Gets memos for a user coming online
     fetchmemo: function (cmd, cb) {
+        cmd.sender = (cmd.trigger === 'nick') ? cmd.recipient : cmd.sender;
+        var notify = (cmd.trigger !== 'nick') ? " They have been PM'd to you." : "";
         this.db.all("SELECT * FROM memo WHERE recipient = ?", cmd.sender, (err, rows) => {
             if (err) return cb(err);
             if (rows.length === 0) return;
             cb(null, [
                 { recipient : cmd.recipient,
-                  message   : cmd.sender + ": Messages have been left for you while you were offline, they have been PM'd to you." }
+                  message   : cmd.sender + ": Messages have been left for you while you were offline." + notify }
             ]);
             for (var i in rows) {
                 cb(null, [

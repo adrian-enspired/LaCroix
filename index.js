@@ -7,15 +7,17 @@ var res      = new Resource();
 
 var TRIGGERS = [
     'PRIVMSG',
-    'JOIN'
+    'JOIN',
+    'NICK' //input.args[0]
 ];
+
+// cheap hack!
+var lastsender;
 
 //TODO:
 // README for extendibility
 // improve regex match for arguments to include single quotes. Only strip first & last
-// tie into error listener for proper response messages to sender (especially for !join and !part)
 // Add autocommand listener on nickchange for memo's
-// Investigate irc server 1 command line argument. /query bot setup and !save
 
 res.irc.addListener('raw', (input) => {
 
@@ -35,6 +37,7 @@ res.irc.addListener('raw', (input) => {
                 return;
             }
             console.log('(' + cmd.sender + ' => ' + res.bot  + '): ' + cmd.raw);
+            lastsender   = cmd.sender;
             cmd.template = info.template;
             cmd.type     = info.type;
 
@@ -82,9 +85,10 @@ res.irc.addListener('raw', (input) => {
     });
 });
 
-// error handling
+// error handling (cheap hack for !part, !join, and !nick)
 res.irc.addListener('error', (message) => {
-    console.error(message.args[2]);
+    console.log('(' + res.bot + ' => ' + lastsender + '): ' + message.args[2]);
+    res.irc.say(lastsender, message.args[2]);
 });
 
 /* Parse the response object and send a response to the specified recipients
@@ -186,10 +190,9 @@ var isBanned = (host, cb) => {
 
 /* Checks to see if a user is permitted based on the command permit
  *
- * @user   : the user nick to check
- * @permit : the command permit to check against
- * cb      :
- *  err    : error, null otherwise
+ * @cmd : the command object containing the users data
+ * cb   :
+ *  err : error, null otherwise
  */
 var isPermitted = (cmd, cb) => {
 

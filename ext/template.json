@@ -114,13 +114,13 @@
 
         "linkinfo":  {
             "permit"  : "*",
-            "trigger" : "privmsg",
+            "trigger" : ["privmsg"],
             "match"   : "https?:\\/\\/[www\\.]?.*?\\..*?(?=\\/|$)"
         },
 
         "fetchmemo": {
             "permit"  : "*",
-            "trigger" : "join",
+            "trigger" : ["join", "nick"],
             "match"   : ""
         }
     }
