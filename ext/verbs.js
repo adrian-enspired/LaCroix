@@ -160,6 +160,7 @@ verbs.user = {
         });
     },
 
+    // TODO: find a way to only show commands the user has permissions for
     // Lists available commands
     // !help
     help : function (cmd, cb) {
@@ -317,6 +318,16 @@ verbs.user = {
         this.irc.part(channel);
     },
 
+    // Lists all channels the bot is connected to
+    // !channels
+    channels : function (cmd, cb) {
+        return cb(null, [
+            { recipient : cmd.sender,
+              message   : "Channels: " + Object.keys(this.irc.chans).join(", ") }
+        ]);
+    },
+
+    // TODO: change res.bot on success!
     // Changes the bot's nick
     // !nick <"nick">
     nick : function (cmd, cb) {

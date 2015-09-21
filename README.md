@@ -8,7 +8,8 @@ An IRC bot just as refreshing as the beverage it's named after.
 <code>"channel" : An array containing the default channels for the bot to connect to</code><br/>
 <code>"nick" : The nick the bot will have</code><br/>
 <code>"master" : The hardcoded admin. This should be your nickserv account, not your nick!</code>
-3. Run! <code>node index.js</code>
+3. Install deps (irc, nodemailer, sqlite3): <code>npm install</code>
+4. Run! <code>node index.js</code>
 
 ##Commands
 
@@ -77,6 +78,10 @@ Commands the bot to join a new channel. It is considered best practice and commo
 ####part
 Command the bot to part from a channel:<br/>
 <code>!part \<"#channel"\></code>
+
+####channels
+Lists all channels the bot is connected to:<br/>
+<code>!channels</code>
 
 ####nick
 Changes the bot's nick:<br/>

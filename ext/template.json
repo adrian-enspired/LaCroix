@@ -97,6 +97,12 @@
             "syntax"  : "!part <\"#channel\">",
             "params"  : 1
         },
+        "channels": {
+            "permit"  : "master",
+            "help"    : "Lists all channels that bot is connected to.",
+            "syntax"  : "!channels",
+            "params"  : 0
+        },
         "nick": {
             "permit"  : "master",
             "help"    : "Changes the nick of the bot.",

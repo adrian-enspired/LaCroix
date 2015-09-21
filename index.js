@@ -13,9 +13,9 @@ var TRIGGERS = [
 //TODO:
 // README for extendibility
 // improve regex match for arguments to include single quotes. Only strip first & last
-// manage bot nick, including changes
 // tie into error listener for proper response messages to sender (especially for !join and !part)
 // Add autocommand listener on nickchange for memo's
+// Investigate irc server 1 command line argument. /query bot setup and !save
 
 res.irc.addListener('raw', (input) => {
 
@@ -84,7 +84,7 @@ res.irc.addListener('raw', (input) => {
 
 // error handling
 res.irc.addListener('error', (message) => {
-    console.error(message);  
+    console.error(message.args[2]);
 });
 
 /* Parse the response object and send a response to the specified recipients
