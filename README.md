@@ -72,11 +72,11 @@ Adjusts a user's permission level. You must specify the user's nickserv account 
 
 ####join
 Commands the bot to join a new channel. It is considered best practice and common courtesy to ask a channel operator before bringing the bot into a channel:<br/>
-<code>!join <\"#channel\"> [\"password\"]</code>
+<code>!join \<"#channel"\> ["password"]</code>
 
 ####part
-Command the bot to part from a channel.
-<code>!part <\"#channel\"></code>
+Command the bot to part from a channel:<br/>
+<code>!part \<"#channel"\></code>
 
 ##Permissions
 There are two permission levels: masters and teachers. Masters have access to all commands, including the ability to adjust user permissions. Teachers can't adjust user permissions, but they can still teach the bot new commands.
