@@ -16,6 +16,7 @@ var lastsender;
 
 //TODO:
 // README for extendibility
+// operator check specificity between active and passive. probably just split the two in operators.js
 
 res.irc.addListener('raw', (input) => {
 

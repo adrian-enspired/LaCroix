@@ -12,6 +12,11 @@ An IRC bot just as refreshing as the beverage it's named after.
 4. Run! <code>node index.js</code>
 
 ##Commands
+###Legend
+- <argument> : Mandatory argument
+- <"argument"> : Mandatory argument wrapped in quotes
+- [argument] : Optional argument
+- <argument|none> : User specified argument, or predefined option "none"
 
 ####help
 This will list all available commands, the response will be PM'd to you:<br/>
