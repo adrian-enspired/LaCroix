@@ -112,6 +112,12 @@
     },
     "auto" : {
 
+        "masterlove": {
+            "permit"  : "*",
+            "trigger" : ["privmsg"],
+            "match"   : "\\<3|love|lacroix"
+        },
+
         "linkinfo":  {
             "permit"  : "*",
             "trigger" : ["privmsg"],

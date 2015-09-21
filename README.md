@@ -14,7 +14,7 @@ An IRC bot just as refreshing as the beverage it's named after.
 ##Commands
 ###Legend
 - \<argument\> : Mandatory argument
-- \<"argument"\> : Mandatory argument wrapped in quotes
+- \<"argument"\> : Mandatory argument wrapped in single or double quotes
 - [argument] : Optional argument
 - \<argument|none\> : User specified argument, or predefined option "none"
 
@@ -112,6 +112,7 @@ Ex: <code>!teach denyit "I ain[squote]t doin[squote] [quote]nothin[squote][quote
 Result: <code>I ain't doin' "nothin'"</code>
 
 ###Operators
+Operators can be used to make replies a little more dynamic and/or personal. You can get a list of available operators at any time with the <code>!operators</code> command.
 There are three types of operators available to any reply:
 ####Variables
 These are basic placeholders for additional arguments, designated by empty curly brackets: <code>{}</code><br/>

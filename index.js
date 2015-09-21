@@ -8,7 +8,7 @@ var res      = new Resource();
 var TRIGGERS = [
     'PRIVMSG',
     'JOIN',
-    'NICK' //input.args[0]
+    'NICK'
 ];
 
 // cheap hack!
