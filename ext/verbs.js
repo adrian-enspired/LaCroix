@@ -351,7 +351,6 @@ verbs.user = {
 verbs.auto = {
 
     masterlove: function (cmd, cb) {
-        console.log(cmd);
         var reply = (cmd.sender === 'shizy') ?
             "I <3 you too, " + cmd.sender + ". :)" :
             cmd.sender + ", nice try. Why don't you try your luck at #singleandlonely?";

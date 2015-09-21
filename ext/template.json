@@ -115,7 +115,7 @@
         "masterlove": {
             "permit"  : "*",
             "trigger" : ["privmsg"],
-            "match"   : "\\<3|love|lacroix"
+            "match"   : "(\\blove|\\<3).*lacroix|lacroix.*(\\blove|\\<3)"
         },
 
         "linkinfo":  {
