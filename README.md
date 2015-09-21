@@ -70,6 +70,14 @@ Checks which user accounts have a particular permission level. Results list the 
 Adjusts a user's permission level. You must specify the user's nickserv account name, NOT their nick (none removes all permissions):<br/>
 <code>!user \<account\> master|teacher|none</code>
 
+####join
+Commands the bot to join a new channel. It is considered best practice and common courtesy to ask a channel operator before bringing the bot into a channel:<br/>
+<code>!join <\"#channel\"> [\"password\"]</code>
+
+####part
+Command the bot to part from a channel.
+<code>!part <\"#channel\"></code>
+
 ##Permissions
 There are two permission levels: masters and teachers. Masters have access to all commands, including the ability to adjust user permissions. Teachers can't adjust user permissions, but they can still teach the bot new commands.
 

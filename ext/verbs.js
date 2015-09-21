@@ -121,7 +121,7 @@ verbs.user = {
 
     //TODO: CHECK FOR INVALID operators
     // Teaches the bot a new command
-    // !teach <verb> "reply {w/ functions}" <params> [help] [syntax]
+    // !teach <verb> "reply {w/ functions}" [help] [syntax]
     teach : function (cmd, cb) {
         var verb   = cmd.args[0];
         var reply  = cmd.args[1];
@@ -299,6 +299,22 @@ verbs.user = {
                   message   : "Notifiable Users: " + users.join(", ") }
             ]);
         });
+    },
+
+    // Joins a channel
+    // !join <#channel> [password]
+    join : function (cmd, cb) {
+        var channel  = cmd.args[0];
+        var password = cmd.args[1];
+        password = (typeof pass === 'undefined') ? "" : " " + password;
+        this.irc.join(channel + password);
+    },
+
+    // Parts from a channel
+    // !part <#channel>
+    part : function (cmd, cb) {
+        var channel = cmd.args[0];
+        this.irc.part(channel);
     },
 };
 verbs.auto = {

@@ -14,7 +14,6 @@ var TRIGGERS = [
 // README for extendibility
 // improve regex match for arguments to include single quotes. Only strip first & last
 // manage bot nick, including changes
-// manage bot connections, multi-channel support
 
 res.irc.addListener('raw', (input) => {
 
@@ -33,7 +32,7 @@ res.irc.addListener('raw', (input) => {
                 sendResponse([ { recipient : cmd.sender, message : err } ]);
                 return;
             }
-            console.log('(' + cmd.sender + '): ' + cmd.raw);
+            console.log('(' + cmd.sender + ' => ' + res.bot  + '): ' + cmd.raw);
             cmd.template = info.template;
             cmd.type     = info.type;
 
@@ -81,13 +80,18 @@ res.irc.addListener('raw', (input) => {
     });
 });
 
+// error handling
+res.irc.addListener('error', (message) => {
+    console.error(message);  
+});
+
 /* Parse the response object and send a response to the specified recipients
  *
  * @response : the response object
  */
 var sendResponse = (response) => {
     for (var i in response) {
-        console.log('(' + res.config.nick + ' => ' + response[i].recipient + '): ' + response[i].message);
+        console.log('(' + res.bot + ' => ' + response[i].recipient + '): ' + response[i].message);
         if (response[i].recipient === 'broadcast') {
             for (var chan in res.irc.chans) res.irc.say(chan, response[i].message);
         } else res.irc.say(response[i].recipient, response[i].message);

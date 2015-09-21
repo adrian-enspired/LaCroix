@@ -34,7 +34,7 @@
         "teach": {
             "permit"  : "teacher",
             "help"    : "Teaches a new command to the bot that anyone can execute.\nVariable substitution can be used in the reply in the form of {}, {active operator}, or [passive operator].\nType !operators to get a list of available operators.",
-            "syntax"  : "!teach <verb> <\"reply\"> [help] [syntax]",
+            "syntax"  : "!teach <verb> <\"reply\"> [\"help\"] [\"syntax\"]",
             "params"  : 2
         },
         "forget": {
@@ -58,7 +58,7 @@
         "memo": {
             "permit"  : "*",
             "help"    : "Leaves a message for an offline user. They will recieve the message as a PM the next time they join.",
-            "syntax"  : "!memo <user> <\"message\">|none",
+            "syntax"  : "!memo <user> <\"message\"|none>",
             "params"  : 2
         },
         "memos": {
@@ -70,7 +70,7 @@
         "notifyme": {
             "permit"  : "*",
             "help"    : "Allows you to be !notify'd by a user when you are offline. A notification will be sent to the email address you provide. *** The email address must be surrounded in quotes!",
-            "syntax"  : "!notifyme \"<email>\"|none",
+            "syntax"  : "!notifyme <\"email\"|none>",
             "params"  : 1
         },
         "notify": {
@@ -84,6 +84,18 @@
             "help"    : "Lists users who have allowed themselves to be notified by email.",
             "syntax"  : "!notifiable",
             "params"  : 0
+        },
+        "join": {
+            "permit"  : "master",
+            "help"    : "Commands the bot to join another channel. ** It is best practice and common courtesy to get the permission of a channel operator before bringing a bot into the channel.",
+            "syntax"  : "!join <\"#channel\"> [password]",
+            "params"  : 1
+        },
+        "part": {
+            "permit"  : "master",
+            "help"    : "Commands the bot to part from a channel.",
+            "syntax"  : "!part <\"#channel\">",
+            "params"  : 1
         }
     },
     "auto" : {
