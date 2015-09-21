@@ -16,8 +16,7 @@ var lastsender;
 
 //TODO:
 // README for extendibility
-// improve regex match for arguments to include single quotes. Only strip first & last
-// Add autocommand listener on nickchange for memo's
+// improve regex match for arguments to include single quotes. 
 
 res.irc.addListener('raw', (input) => {
 
