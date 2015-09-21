@@ -14,6 +14,8 @@ var TRIGGERS = [
 // README for extendibility
 // improve regex match for arguments to include single quotes. Only strip first & last
 // manage bot nick, including changes
+// tie into error listener for proper response messages to sender (especially for !join and !part)
+// Add autocommand listener on nickchange for memo's
 
 res.irc.addListener('raw', (input) => {
 

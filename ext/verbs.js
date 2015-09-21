@@ -12,7 +12,7 @@ var verbs  = {};
 verbs.user = {
 
     // Add, edit, remove a user permission
-    // !user <account> master|teacher|none
+    // !user <account> <master|teacher|none>
     user : function (cmd, cb) {
         var name = cmd.args[0];
         var role = cmd.args[1];
@@ -121,7 +121,7 @@ verbs.user = {
 
     //TODO: CHECK FOR INVALID operators
     // Teaches the bot a new command
-    // !teach <verb> "reply {w/ functions}" [help] [syntax]
+    // !teach <verb> <"reply"> ["help"] ["syntax"]
     teach : function (cmd, cb) {
         var verb   = cmd.args[0];
         var reply  = cmd.args[1];
@@ -187,7 +187,7 @@ verbs.user = {
     },
 
     // Leaves a message for an offline user
-    // !memo <user> <message>|none
+    // !memo <user> <"message"|none>
     memo : function (cmd, cb) {
         var to  = cmd.args[0];
         var msg = cmd.args[1];
@@ -232,7 +232,7 @@ verbs.user = {
 
     // TODO: add email verification
     // Allows you to be notified by email
-    // !notifyme <email>|none
+    // !notifyme <"email"|none>
     notifyme : function (cmd, cb) {
         if (cmd.args[0] !== "none")  {
             this.db.run("REPLACE INTO notify (name, email) VALUES (?, ?)", cmd.sender, cmd.args[0], (err) => {
@@ -260,7 +260,7 @@ verbs.user = {
     },
 
     // Notifies an offline user, sending them an email notification
-    // !notify <user> [message]
+    // !notify <user> ["message"]
     notify : function (cmd, cb) {
         var message = (cmd.args.length === 1) ?
                       "User " + cmd.sender + " has poked you." :
@@ -302,7 +302,7 @@ verbs.user = {
     },
 
     // Joins a channel
-    // !join <#channel> [password]
+    // !join <"#channel"> ["password"]
     join : function (cmd, cb) {
         var channel  = cmd.args[0];
         var password = cmd.args[1];
@@ -311,10 +311,17 @@ verbs.user = {
     },
 
     // Parts from a channel
-    // !part <#channel>
+    // !part <"#channel">
     part : function (cmd, cb) {
         var channel = cmd.args[0];
         this.irc.part(channel);
+    },
+
+    // Changes the bot's nick
+    // !nick <"nick">
+    nick : function (cmd, cb) {
+        var nick = cmd.args[0];
+        this.irc.send('NICK', nick);
     },
 };
 verbs.auto = {

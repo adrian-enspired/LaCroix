@@ -96,6 +96,12 @@
             "help"    : "Commands the bot to part from a channel.",
             "syntax"  : "!part <\"#channel\">",
             "params"  : 1
+        },
+        "nick": {
+            "permit"  : "master",
+            "help"    : "Changes the nick of the bot.",
+            "syntax"  : "!nick <nick>",
+            "params"  : 1
         }
     },
     "auto" : {

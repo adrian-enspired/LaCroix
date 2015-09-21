@@ -24,7 +24,7 @@ Lists all available operators usable when teaching commands:<br/>
 
 ####memo
 Leave a message for an offline user, the message will be delivered to them the next time they join the channel ("none" deletes the message):<br/>
-<code>!memo \<nick\> \<message\>|none</code>
+<code>!memo \<nick\> \<message|none\></code>
 
 ####memos
 Lists all memos you've left for other users:<br/>
@@ -32,11 +32,11 @@ Lists all memos you've left for other users:<br/>
 
 ####notifyme
 Allow yourself !notify(d) notified by email if you are offline ("none" disables email notification):<br/>
-<code>!notifyme \<"email address"\>|none</code>
+<code>!notifyme \<"email address"|none\></code>
 
 ####notify
 Sends an email notification to an offline user. This will only work if the user has setup email notifications using !notifyme:<br/>
-<code>!notify \<nick\> [message]</code>
+<code>!notify \<nick\> ["message"]</code>
 
 ####notifiable
 Lists all users who have allowed themselves to be notified by email:<br/>
@@ -44,7 +44,7 @@ Lists all users who have allowed themselves to be notified by email:<br/>
 
 ####teach
 Teaches the bot a new command. Refer to the Teaching Commands section below for more information:<br/>
-<code>!teach \<verb\> \<"reply"\> [help] [syntax]</code>
+<code>!teach \<verb\> \<"reply"\> ["help"] ["syntax"]</code>
 
 ####forget
 Deletes a previously learned command:<br/>
@@ -68,7 +68,7 @@ Checks which user accounts have a particular permission level. Results list the 
 
 ####user
 Adjusts a user's permission level. You must specify the user's nickserv account name, NOT their nick (none removes all permissions):<br/>
-<code>!user \<account\> master|teacher|none</code>
+<code>!user \<account\> \<master|teacher|none\></code>
 
 ####join
 Commands the bot to join a new channel. It is considered best practice and common courtesy to ask a channel operator before bringing the bot into a channel:<br/>
@@ -77,6 +77,10 @@ Commands the bot to join a new channel. It is considered best practice and commo
 ####part
 Command the bot to part from a channel:<br/>
 <code>!part \<"#channel"\></code>
+
+####nick
+Changes the bot's nick:<br/>
+<code>!nick \<"nick"\></code>
 
 ##Permissions
 There are two permission levels: masters and teachers. Masters have access to all commands, including the ability to adjust user permissions. Teachers can't adjust user permissions, but they can still teach the bot new commands.
