@@ -101,12 +101,17 @@ The syntax for teaching the bot a new command is:
 - reply: The reply that the bot will give to the issued command. Any reply with spaces must be wrapped in quotes. Replies can contain any number of variable placeholders or operators to extend their usefulness and functionality. See the Operators section below for more information.
 - help / syntax: The help description and syntax example. These can be seen at any time by preceeding the verb with a "?" (Ex: <code>?love</code>). These fields are optional. Though it is recommended to leave help for more elaborate commands.
 
+In order to use a single or double quote in the reply, consider using the [squote] or [quote] passive operators. Failure to do otherwise will most likely result in a truncated reply.
+
+Ex: <code>!teach denyit "I ain[squote]t doin[squote] [quote]nothin[squote][quote]"</code><br/>
+Result: <code>I ain't doin' "nothin'"</code>
+
 ###Operators
 There are three types of operators available to any reply:
 ####Variables
 These are basic placeholders for additional arguments, designated by empty curly brackets: <code>{}</code><br/>
 For Example:<br/>
-Teaching: <code>!teach count "v'{}, {}, {}, ah-ah-ah"</code><br/>
+Teaching: <code>!teach count "v[squote]{}, {}, {}, ah-ah-ah"</code><br/>
 Execution: <code>!count one two three</code><br/>
 Result: <code>[LaCroix]: v'one, two, three, ah-ah-ah"</code><br/>
 
@@ -120,7 +125,7 @@ Result: <code>[LaCroix]: noobie, learn to find things yourself: http://lmddgtfy.
 ####Passive Operators
 These are basic functions requiring no arguments, but are simply replaced by a predefined value. They are designated with the name of the operator surrounded by square brackets: <code>[operator]</code><br/>
 For Example:<br/>
-Teaching: <code>!teach love "[bot] <3's [me]"</code><br/>
+Teaching: <code>!teach love "[bot] <3[squote]s [me]"</code><br/>
 Execution: <code>!love</code><br/>
 Result: <code>[LaCroix]: [LaCroix] <3's shizy</code><br/>
 

@@ -119,14 +119,23 @@ verbs.user = {
         });
     },
 
-    //TODO: CHECK FOR INVALID operators
     // Teaches the bot a new command
     // !teach <verb> <"reply"> ["help"] ["syntax"]
     teach : function (cmd, cb) {
-        var verb   = cmd.args[0];
-        var reply  = cmd.args[1];
-        var help   = cmd.args[2] || "";
-        var syntax = cmd.args[3] || "";
+        var verb    = cmd.args[0];
+        var reply   = cmd.args[1];
+        var help    = cmd.args[2] || "";
+        var syntax  = cmd.args[3] || "";
+        var matches = reply.match(/[{|\[].*?[}|\]]/g);
+        for (var i in matches) {
+            var op = matches[i].replace(/[{|\[|}|\]]/g, '');
+            if (op.trim() !== "" && !this.operator.hasOwnProperty(op)) {
+                return cb(null, [
+                    { recipient : cmd.sender,
+                      message   : "Invalid operator: " + op }
+                ]);
+            }
+        }
         // no name sharing with builtin commands
         if (this.template.user.hasOwnProperty(verb))
             return cb(null, [
@@ -140,6 +149,8 @@ verbs.user = {
             ]);
             return cb(null, [
                 { recipient : 'broadcast',
+                  message   : "I have learned how to " + verb + "!" },
+                { recipient : cmd.sender,
                   message   : "I have learned how to " + verb + "!" }
             ]);
         });
@@ -155,6 +166,8 @@ verbs.user = {
             ]);
             return cb(null, [
                 { recipient : 'broadcast',
+                  message   : "I swear to never " + cmd.args[0] + " again!" },
+                { recipient : cmd.sender,
                   message   : "I swear to never " + cmd.args[0] + " again!" }
             ]);
         });
