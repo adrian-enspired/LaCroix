@@ -16,7 +16,7 @@ var lastsender;
 
 //TODO:
 // README for extendibility
-// improve regex match for arguments to include single quotes. 
+// improve regex match for arguments to include single quotes. Account for escaped quotes?
 
 res.irc.addListener('raw', (input) => {
 

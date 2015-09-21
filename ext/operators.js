@@ -15,4 +15,10 @@ module.exports = {
     bot : function (cmd) {
         return this.bot;
     },
+    quote : function (cmd) {
+        return "\"";
+    },
+    squote : function (cmd) {
+        return "'";
+    },
 };
