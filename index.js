@@ -1,7 +1,8 @@
 var Resource = require('./lib/resource.js');
 var Command  = require('./lib/command.js');
-var command  = new Command(); // ewwwwwww
 var verbs    = require('./ext/verbs.js');
+
+var command  = new Command(); // ewwwwwww
 var res      = new Resource();
 
 var TRIGGERS = [
@@ -11,6 +12,9 @@ var TRIGGERS = [
 
 //TODO:
 // README for extendibility
+// improve regex match for arguments to include single quotes. Only strip first & last
+// manage bot nick, including changes
+// manage bot connections, multi-channel support
 
 res.irc.addListener('raw', (input) => {
 
@@ -83,12 +87,10 @@ res.irc.addListener('raw', (input) => {
  */
 var sendResponse = (response) => {
     for (var i in response) {
+        console.log('(' + res.config.nick + ' => ' + response[i].recipient + '): ' + response[i].message);
         if (response[i].recipient === 'broadcast') {
-            // for every channel!
-            response[i].recipient = res.config.channel;
-        }
-        res.irc.say(response[i].recipient, response[i].message);
-        console.log('(' + res.config.nick + '): ' + response[i].message);
+            for (var chan in res.irc.chans) res.irc.say(chan, response[i].message);
+        } else res.irc.say(response[i].recipient, response[i].message);
     }
 };
 

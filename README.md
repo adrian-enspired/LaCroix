@@ -5,7 +5,7 @@ An IRC bot just as refreshing as the beverage it's named after.
 1. Clone the repo
 2. Edit the config.json:<br/>
 <code>"server" : The IRC server for the bot to connect to</code><br/>
-<code>"channel" : The channel for the bot to connect to</code><br/>
+<code>"channel" : An array containing the default channels for the bot to connect to</code><br/>
 <code>"nick" : The nick the bot will have</code><br/>
 <code>"master" : The hardcoded admin. This should be your nickserv account, not your nick!</code>
 3. Run! <code>node index.js</code>
@@ -31,7 +31,7 @@ Lists all memos you've left for other users:<br/>
 <code>!memos</code>
 
 ####notifyme
-Allow yourself !poke(ed) by online users and notified by email if you are offline ("none" disables email notification):<br/>
+Allow yourself !notify(d) notified by email if you are offline ("none" disables email notification):<br/>
 <code>!notifyme \<"email address"\>|none</code>
 
 ####notify

@@ -225,7 +225,7 @@ verbs.user = {
         }, () => {
             return cb(null,  [
                 { recipient : cmd.sender,
-                  message   : "Memos: \n" + users.join("\n") }
+                  message   : "Memos: \n" + messages.join("\n") }
             ]);
         });
     },
