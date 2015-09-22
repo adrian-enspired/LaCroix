@@ -108,6 +108,12 @@
             "help"    : "Changes the nick of the bot.",
             "syntax"  : "!nick <nick>",
             "params"  : 1
+        },
+        "say": {
+            "permit"  : "master",
+            "help"    : "Command the bot to relay a message to a recipient. The recipient can either be a channel, or a nick",
+            "syntax"  : "!say <recipient> <\"message\">",
+            "params"  : 2
         }
     },
     "auto" : {

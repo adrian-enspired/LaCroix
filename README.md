@@ -92,6 +92,10 @@ Lists all channels the bot is connected to:<br/>
 Changes the bot's nick:<br/>
 <code>!nick \<"nick"\></code>
 
+####say
+Relays a message to a recipient under the alias of the bot. Recipient can be either a nick or a channel:<br/>
+<code>!say \<recipient\> \<"message"\></code>
+
 ##Permissions
 There are two permission levels: masters and teachers. Masters have access to all commands, including the ability to adjust user permissions. Teachers can't adjust user permissions, but they can still teach the bot new commands.
 

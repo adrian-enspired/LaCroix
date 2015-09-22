@@ -347,6 +347,17 @@ verbs.user = {
         var nick = cmd.args[0];
         this.irc.send('NICK', nick);
     },
+
+    // Command to bot to relay a message to a recipient
+    // !say <recipient> <message>
+    say : function (cmd, cb) {
+        var recipient = cmd.args[0];
+        var message   = cmd.args[1];
+        return cb(null, [
+            { recipient : recipient,
+              message   : message }
+        ]);
+    },
 };
 verbs.auto = {
 
