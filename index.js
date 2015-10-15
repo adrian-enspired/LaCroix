@@ -5,6 +5,7 @@ var verbs    = require('./ext/verbs.js');
 var command  = new Command(); // ewwwwwww
 var res      = new Resource();
 
+// only these raw messages are considered as commands, all else are discarded!
 var TRIGGERS = [
     'PRIVMSG',
     'JOIN',
@@ -17,7 +18,7 @@ var lastsender;
 //TODO:
 // README for extendibility
 // operator check specificity between active and passive. probably just split the two in operators.js
-// add one-time 'say' command
+// consider moving config to sqlite. Upon setup, only the server needs to be provided as a command line argument. !save then updates all the saved info (nick, channels, server, etc)
 
 res.irc.addListener('raw', (input) => {
 

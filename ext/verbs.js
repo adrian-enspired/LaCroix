@@ -349,7 +349,7 @@ verbs.user = {
     },
 
     // Command to bot to relay a message to a recipient
-    // !say <recipient> <message>
+    // !say <recipient|broadcast> <message>
     say : function (cmd, cb) {
         var recipient = cmd.args[0];
         var message   = cmd.args[1];

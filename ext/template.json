@@ -111,8 +111,8 @@
         },
         "say": {
             "permit"  : "master",
-            "help"    : "Command the bot to relay a message to a recipient. The recipient can either be a channel, or a nick",
-            "syntax"  : "!say <recipient> <\"message\">",
+            "help"    : "Command the bot to relay a message to a recipient. The recipient can either be a channel, or a nick. Broadcasts sends the message to all channels the bot has joined.",
+            "syntax"  : "!say <recipient|broadcast> <\"message\">",
             "params"  : 2
         }
     },
