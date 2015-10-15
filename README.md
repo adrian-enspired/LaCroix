@@ -148,10 +148,10 @@ Everything in the <code>/ext</code> folder can be edited / added to.
 ####New User Functions / Autocommands
 New entries should be made in both <code>/ext/verbs.js</code> and <code>/ext/template.json</code> for any new user or autocommands.
 In <code>verbs.js</code>, create a new a new function in the following format under the appropriate object (user or auto):
-<code>
-    myfunction : function (cmd, cb) {
-        /* your code goes here */
-    },
+<code><br/>
+    myfunction : function (cmd, cb) {<br/>
+        /* your code goes here */<br/>
+    },<br/>
 </code>
 The following resources are provided to you:
 - cmd: all command objects including sender, recipient, etc.
@@ -160,13 +160,13 @@ The following resources are provided to you:
 In addition to defining what the function does in <code>verbs.js</code>, you must also define the function template in <code>template.json</code>.
 Take note that the JSON object name must match the function name!
 The following is required for a user command:
-<code>
-    "myfunction" : {
-        "permit" : "",
-        "help"   : "",
-        "syntax" : "",
-        "params" : 0
-    }
+<code><br/>
+    "myfunction" : {<br/>
+        "permit" : "",<br/>
+        "help"   : "",<br/>
+        "syntax" : "",<br/>
+        "params" : 0<br/>
+    }<br/>
 </code>
 Where the parameters follow the pattern:
 - "permit" : the lowest level of permission required to perform the command: "master", "teacher", or "*" for everyone
@@ -175,12 +175,12 @@ Where the parameters follow the pattern:
 - "params" : the number of required parameters in order for the command to execute sucessfully
 
 The following is required for an auto command:
-<code>
-    "myfunction" : {
-        "permit" : "",
-        "trigger": [],
-        "match"  : "",
-    }
+<code><br/>
+    "myfunction" : {</br>
+        "permit" : "",<br/>
+        "trigger": [],<br/>
+        "match"  : "",<br/>
+    }<br/>
 </code>
 Where the parameters follow the pattern:
 - "permit" : the lowest level of permissions required for the user to trigger the auto command: "master", "teacher" or "*" for everyone
