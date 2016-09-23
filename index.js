@@ -5,6 +5,12 @@ var verbs    = require('./ext/verbs.js');
 var command  = new Command(); // ewwwwwww
 var res      = new Resource();
 
+// for web binding required services
+if (process.env.WEB_BIND === "true") 
+    require('http').createServer(function (req,res) {
+        res.send(200); 
+    }).listen(process.env.PORT);
+
 // only these raw messages are considered as commands, all else are discarded!
 var TRIGGERS = [
     'PRIVMSG',
