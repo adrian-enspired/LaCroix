@@ -1,6 +1,6 @@
 {
     "server"  : "",
-    "channel" : [""],
+    "channel" : [],
     "nick"    : "",
     "master"  : ""
 }

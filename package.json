@@ -4,7 +4,7 @@
   "description": "IRC Bot for #css-tricks on freenode",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Robert 'shizy' Winterstein",
   "license": "ISC",
